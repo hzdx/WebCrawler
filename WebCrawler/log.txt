@@ -1,0 +1,12 @@
+fetching :https://jsoup.org/apidocs/org/jsoup/Connection.html
+statusLine:HTTP/1.1 200 OK
+d:/crawler/jsoup/apidocs/org/jsoup/Connection.html is saved ...
+fetching :https://jsoup.org/../../../serialized-form.html
+statusLine:HTTP/1.1 400 Bad Request
+fetching :https://jsoup.org/../../../org/jsoup/select/Selector.html
+statusLine:HTTP/1.1 400 Bad Request
+fetching :https://jsoup.org/packages/jsoup-1.9.1-javadoc.jar
+statusLine:HTTP/1.1 200 OK
+d:/crawler/jsoup/packages/jsoup-1.9.1-javadoc.jar/index.html is saved ...
+fetching :https://jsoup.org/news/release-1.5.2
+statusLine:HTTP/1.1 200 OK
