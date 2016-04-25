@@ -1,4 +1,4 @@
-package com.mycom.jsoup.test;
+package com.mycom.webcrawler;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -7,31 +7,38 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mycom.webcrawler.FileUtil;
-import com.mycom.webcrawler.StringUtil;
 
-public class JsoupTest {
-	private Logger log = LoggerFactory.getLogger(FileUtil.class);
-	public static void main(String[] args) throws Exception {
-        String url = "https://maven.apache.org";
-        new JsoupTest().listUrl(url);
-    }
+public class JsoupParser {
+	private Logger log = LoggerFactory.getLogger(JsoupParser.class);
+	public UrlSetHolder urlHolder;
 
-	private void listUrl(String url) throws Exception {
-		print("Fetching %s...", url);
+	public UrlSetHolder getUrlHolder() {
+		return urlHolder;
+	}
 
-        //Document doc = Jsoup.connect(url).get();
-        Document doc = Jsoup.parse(HttpClientTest.doget(url));
+	public void setUrlHolder(UrlSetHolder urlHolder) {
+		this.urlHolder = urlHolder;
+	}
+
+	public static void main(String[] args) {
+		String date = "2011年10月2日日";
+        String strs[] =date.split("\\D{1,}");//\\D非数字
+        for(int i=0;i<strs.length;i++){
+        System.out.println(strs[i]);}
+	}
+
+	public void parseUrl(String html,String baseUrl){
+		Document doc = Jsoup.parse(html);
         Elements links = doc.select("a[href]");
         Elements media = doc.select("[src]");
         Elements imports = doc.select("link[href]");
-
+        //todo ./css/apache-maven-fluido-1.4.min.css -> https://maven.apache.org/../css/apache-maven-fluido-1.4.min.css
         for (Element src : media) {
         	String mediaUrl = src.attr("src");
         	log.info("-----------------------------------------------");
         	log.info("jsoupParser get orgin url :{}",mediaUrl);
         	//if(!mediaUrl.startsWith(baseUrl)) continue;//不访问跨域的链接 todo 对跨域的选项
-        	//urlHolder.addUrl(StringUtil.getAbsUrl(baseUrl, mediaUrl));
+        	urlHolder.addUrl(StringUtil.getAbsUrl(baseUrl, mediaUrl));
         	
         }
         for (Element link : imports) {
@@ -39,7 +46,7 @@ public class JsoupTest {
             log.info("-----------------------------------------------");
             log.info("jsoupParser get orgin url :{}",importsUrl);
             //if(!importsUrl.startsWith(baseUrl)) continue;
-            //urlHolder.addUrl(StringUtil.getAbsUrl(baseUrl, importsUrl));
+            urlHolder.addUrl(StringUtil.getAbsUrl(baseUrl, importsUrl));
         }
 
         for (Element link : links) {
@@ -47,21 +54,8 @@ public class JsoupTest {
             log.info("-----------------------------------------------");
             log.info("jsoupParser get orgin url :{}",linkUrl);
             //if(!linkUrl.startsWith(baseUrl)) continue;
-            //urlHolder.addUrl(StringUtil.getAbsUrl(baseUrl, linkUrl));
+            urlHolder.addUrl(StringUtil.getAbsUrl(baseUrl, linkUrl));
         }
-        //<a href="javascript:;"> 不会添加为链接
 	}
-
-    private void print(String msg, Object... args) {
-        System.out.println(String.format(msg, args));
-    }
-
-    private String trim(String s, int width) {
-        if (s.length() > width)
-            return s.substring(0, width-1) + ".";
-        else
-            return s;
-    }
+	
 }
-
-

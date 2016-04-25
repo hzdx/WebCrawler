@@ -5,9 +5,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mycom.webcrawler.httpclient.HttpClientHolder;
 
 public class FileUtil {
+	private static Logger log = LoggerFactory.getLogger(FileUtil.class);
 
 	public static void main(String[] args) throws Exception {
 		String html = HttpClientHolder.fetchUrl("http://www.oschina.net/");
@@ -46,6 +50,6 @@ public class FileUtil {
 			bw.flush();
 			bw.close();
 		}
-		System.out.println(path + "/" + fileName + " is saved ...");
+		log.info(path + "/" + fileName + " is saved ...");
 	}
 }

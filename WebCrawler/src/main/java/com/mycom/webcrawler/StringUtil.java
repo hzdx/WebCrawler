@@ -1,12 +1,51 @@
 package com.mycom.webcrawler;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class StringUtil {
+	private static Logger log = LoggerFactory.getLogger(StringUtil.class);
 
 	public static void main(String[] args) {
-		String baseUrl = "https://jsoup.org/apidocs/org/jsoup/Connection.html";
-		String resultUrl = "https://jsoup.org/../../../serialized-form.html";
-		String expectUrl = "https://jsoup.org/apidocs/serialized-form.html";
-		System.out.println(transUrl(baseUrl, resultUrl));
+//		String baseUrl = "https://jsoup.org/apidocs/org/jsoup/Connection.html";
+//		String pageUrl = "https://jsoup.org/../../../aaa/serialized-form.html";
+//		String expectUrl = "https://jsoup.org/apidocs/serialized-form.html";
+//		System.out.println(transUrl(baseUrl, resultUrl));
+		String baseUrl = "https://maven.apache.org/";
+		String pageUrl = "./css/site.css";
+		System.out.println(getAbsUrl(baseUrl,pageUrl));
+	}
+
+	/**
+	 * 获取绝对url
+	 * 
+	 * @param baseUrl
+	 *            当前url
+	 * @param relativeUrl
+	 *            解析到的url
+	 * @return
+	 */
+	public static String getAbsUrl(String baseUrl, String pageUrl) {
+		if (pageUrl.startsWith(baseUrl) || pageUrl.startsWith("http://") || pageUrl.startsWith("https://")){
+			log.info("abs url :{}",pageUrl);
+			return transUrl(baseUrl,pageUrl);
+		}	
+		if (baseUrl.lastIndexOf("/") != baseUrl.length() - 1) 
+			// 如果最后一个字符不是/ ,加上/
+			baseUrl = baseUrl + "/";
+		if (pageUrl.startsWith("./")) {// 以./开头的url
+			if(pageUrl.length()>2)
+				pageUrl = pageUrl.substring(2,pageUrl.length());
+			else pageUrl = "";
+		}
+		if(pageUrl.startsWith("/")){	//以/开头的url
+			if(pageUrl.length()>1)
+				pageUrl = pageUrl.substring(1,pageUrl.length());
+			else pageUrl = "";
+		}
+		String combineUrl = baseUrl + pageUrl;
+		log.info("combine url :{}",combineUrl);
+		return transUrl(baseUrl,combineUrl);
 	}
 
 	/**
@@ -18,10 +57,12 @@ public class StringUtil {
 	 *            jsoup得到的结果url
 	 * @return 实际的url
 	 */
-	//todo 出现了 https://configure.html 的url，检查是否有问题
+	// todo 出现了 https://configure.html 的url，检查是否有问题
 	public static String transUrl(String baseUrl, String resultUrl) {
 		if (!resultUrl.contains("../"))
 			return resultUrl;
+		log.info(" url before trans :" + resultUrl);
+		log.info(" baseUrl :" + baseUrl);
 		String[] arr = resultUrl.split("/", -1);
 		int n = 0;
 		for (String str : arr) {
@@ -29,21 +70,21 @@ public class StringUtil {
 				n++;
 		}
 		// System.out.println(n);
-		// 1.得到resultUrl中 ../ 的个数n<br>
+		// 1.得到resultUrl中 ../ 的个数n
 		if (baseUrl.lastIndexOf("/") == baseUrl.length() - 1) // 如果最后一个字符是/ ,去掉/
 			baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
 		arr = baseUrl.split("/", -1);
 		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < arr.length - n; i++) {
+		for (int i = 0; i < arr.length - n -1; i++) {
 			sb.append(arr[i] + "/");
 		}
 		// System.out.println(sb.toString());
-		// 2.baseUrl 回退n个位置<br>
-		String[] resultUrlArr = resultUrl.split("../",-1);
-		// https://jsoup.org/../../../serialized-form.html
-		// --> [http, /jsoup.o, , , , serialized-form.html]
+		// 2.baseUrl 回退n+1个位置<br>
+		String[] resultUrlArr = resultUrl.split("(\\.\\./)+");
+		String expectUrl = sb.toString() + resultUrlArr[resultUrlArr.length - 1];
+		log.info(" url after trans :" + expectUrl);
 		// 3.第二步的结果加上 resultUrl ../后面的内容
-		return sb.toString() + resultUrlArr[resultUrlArr.length - 1];
+		return expectUrl;
 	}
 
 	public static boolean isBlank(String str) {

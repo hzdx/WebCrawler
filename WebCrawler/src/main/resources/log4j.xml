@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+    <appender name="myConsole" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="[%t -%p] - %m%n"/>
+        </layout>
+        <!--限制输出级别-->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMax" value="ERROR"/>
+            <param name="LevelMin" value="INFO"/>
+            <param name="AcceptOnMatch" value="true"/>
+        </filter>
+    </appender>
+
+    <!-- 输出到日志文件  -->
+    <appender name="log4jLogInfo" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="logs/info.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601}-- %p -- %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="INFO"/>
+            <param name="LevelMax" value="INFO"/>
+        </filter>
+    </appender>
+
+    <appender name="log4jLogError" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="logs/error.log"/>
+        <param name="Append" value="true"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%c %d{ISO8601}-- %p -- %m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="ERROR"/>
+            <param name="LevelMax" value="ERROR"/>
+        </filter>
+    </appender>
+    <category name="org.apache.kafka">
+        <priority value="debug"/>
+    </category>
+
+    <root>
+        <priority value="DEBUG"/>
+        <appender-ref ref="myConsole"/>
+        <appender-ref ref="log4jLogInfo"/>
+        <appender-ref ref="log4jLogError"/>
+    </root>
+</log4j:configuration>
