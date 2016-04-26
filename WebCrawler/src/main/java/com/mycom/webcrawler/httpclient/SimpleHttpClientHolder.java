@@ -22,8 +22,8 @@ import org.slf4j.LoggerFactory;
 
 import com.mycom.webcrawler.model.UrlWrapper;
 
-public class HttpClientHolder {
-	private static Logger log = LoggerFactory.getLogger(HttpClientHolder.class);
+public class SimpleHttpClientHolder {
+	private static Logger log = LoggerFactory.getLogger(SimpleHttpClientHolder.class);
 	
 	private static RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(10 * 1000)
 			.setConnectionRequestTimeout(10 * 1000).setConnectTimeout(10 * 1000).build();
@@ -31,35 +31,20 @@ public class HttpClientHolder {
 	private static CloseableHttpClient httpClient = HttpClients.custom()// 自定义
 			.setDefaultRequestConfig(requestConfig).setRetryHandler(retryHandler)
 			.setUserAgent("Mozilla/5.0 Chrome/50.0.2661.75").build();//
-	private static HttpClientContext context = HttpClientContext.create();
 
-	// todo 文件类型，视频，音频类型的获取
-	public static UrlWrapper fetchUrl(String url0) throws Exception {
+	public static String fetchUrl(String url0) throws Exception {
 		HttpGet httpget = new HttpGet(url0);
 		log.info("httpClient fetching :" + url0);
-		CloseableHttpResponse response = httpClient.execute(httpget, context);
+		CloseableHttpResponse response = httpClient.execute(httpget);
 		try {
 			HttpEntity entity = response.getEntity();
 			String status = response.getStatusLine().toString();
 			log.info("status :{}", status);
 
 			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK && entity != null) {
-				//todo read timeout 估计因为是加了 HttpClientContext
-				UrlWrapper wrapper = new UrlWrapper();
-				// 获取重定向之后的url
-				HttpHost target = context.getTargetHost();
-				List<URI> redirectLocations = context.getRedirectLocations();
-				URI location = URIUtils.resolve(httpget.getURI(), target, redirectLocations);
-				String finalUrl = location.toASCIIString();
-				if (!(url0).equals(finalUrl)) {
-					log.info("final http location: {}", finalUrl);
-					wrapper.setUrl(finalUrl);
-				} else {
-					wrapper.setUrl(url0);
-				}
+				
 				String content = EntityUtils.toString(entity);
-				wrapper.setHtml(content);
-				return wrapper;
+				return content;
 			} else {
 				log.error("url: {} ,status: {} ", url0, status);
 				return null;

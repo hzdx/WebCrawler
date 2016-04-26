@@ -1,12 +1,70 @@
-fetching :https://jsoup.org/apidocs/org/jsoup/Connection.html
-statusLine:HTTP/1.1 200 OK
-d:/crawler/jsoup/apidocs/org/jsoup/Connection.html is saved ...
-fetching :https://jsoup.org/../../../serialized-form.html
-statusLine:HTTP/1.1 400 Bad Request
-fetching :https://jsoup.org/../../../org/jsoup/select/Selector.html
-statusLine:HTTP/1.1 400 Bad Request
-fetching :https://jsoup.org/packages/jsoup-1.9.1-javadoc.jar
-statusLine:HTTP/1.1 200 OK
-d:/crawler/jsoup/packages/jsoup-1.9.1-javadoc.jar/index.html is saved ...
-fetching :https://jsoup.org/news/release-1.5.2
-statusLine:HTTP/1.1 200 OK
+<div class="pinfo"  id="prop_infor" >
+                <a href="javascript:void(0);"class="startLink"></a>
+                <div class="box prop-info-box" id="prop_infor">
+                    <div class="phraseobox cf">
+                        <div class="litem fl">
+                            <dl class="p_phrase cf">
+                                <dt>售价</dt>
+                                <dd class="og">
+                                    <strong><span class="f26">68</span><em>万</em></strong>
+
+                                                                    </dd>
+                            </dl>
+                            <dl class="p_phrase cf">
+                                <dt>参考首付</dt>
+                                <dd>20.40万</dd>
+                            </dl>
+                            <dl class="p_phrase cf">
+                                <dt>参考月供</dt>
+                                <dd id="reference_monthpay"></dd>
+                            </dl>
+                            <dl class="p_phrase cf">
+                                <dt>单价</dt>
+                                <dd>12142元/平米</dd>
+                            </dl>
+                            <dl class="p_phrase cf">
+                                <dt>所在小区</dt>
+                                <dd>
+                                                                        <a href="http://shanghai.anjuke.com/community/view/400876?from=propview" target="_blank">米兰公馆</a>
+                                    （租<a href="http://shanghai.anjuke.com/community/props/rent/400876" target="_blank" id="p-phrase-rent-num"></a>套，售<a href="http://shanghai.anjuke.com/community/props/sale/400876/" target="_blank" id="p-phrase-sale-num"></a>套）
+                                                                    </dd>
+                            </dl>
+                            <dl class="p_phrase cf">
+                                <dt>位置</dt>
+                                <dd>
+                                                                        <a target="_blank" href="http://shanghai.anjuke.com/community/W0QQp1Z13">宝山</a>
+                        <a target="_blank" href="http://shanghai.anjuke.com/community/W0QQp1Z13"></a>
+                                                                    </dd>
+                            </dl>
+                        </div>
+                        <div class="ritem fr">
+                            <dl class="p_phrase cf">
+                                <dt>房型</dt>
+                                <dd>2室2厅1卫</dd>
+                            </dl>
+                            <dl class="p_phrase cf">
+                                <dt>面积</dt>
+                                <dd>56平米</dd>
+                            </dl>
+                                                        <dl class="p_phrase cf">
+                                <dt>朝向</dt>
+                                <dd>南北</dd>
+                            </dl>
+                            
+                            <dl class="p_phrase cf">
+                                <dt>楼层</dt>
+                                <dd>10/16</dd>
+                            </dl>
+
+                                                        <dl class="p_phrase cf">
+                                <dt>装修</dt>
+                                <dd>精装修</dd>
+                            </dl>
+                                                                                    <dl class="p_phrase cf">
+                                <dt>类型</dt>
+                                <dd>
+                                    公寓                                </dd>
+                            </dl>
+                            
+                        </div>
+                    </div>

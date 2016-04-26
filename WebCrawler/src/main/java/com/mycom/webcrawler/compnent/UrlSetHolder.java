@@ -1,4 +1,4 @@
-package com.mycom.webcrawler;
+package com.mycom.webcrawler.compnent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.mycom.webcrawler.util.StringUtil;
 
 public class UrlSetHolder {
 	private Logger log = LoggerFactory.getLogger(UrlSetHolder.class);
@@ -28,8 +30,9 @@ public class UrlSetHolder {
 		if(!isCrossDomain){//不跨域，非主站地址不进行解析。
 			if(!url.startsWith(mainUrl)) return;
 		}
+		if(url.contains("mailto")) return;
 		if(urlMap.keySet().contains(url)) return;
-		url = filterUrl0(url);
+		//url = filterUrl0(url);
 		log.info("urlHolder put :{}",url);
 		urlMap.put(url, true);//还未必解析为ture
 	}
@@ -55,6 +58,7 @@ public class UrlSetHolder {
 	}
 	
 	public void markUrl(String url){
+		if(urlMap.keySet().contains(url))
 		urlMap.put(url, false);//已经被解析为false
 	}
 	

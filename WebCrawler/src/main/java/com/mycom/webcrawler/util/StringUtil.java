@@ -1,4 +1,4 @@
-package com.mycom.webcrawler;
+package com.mycom.webcrawler.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,11 +11,13 @@ public class StringUtil {
 //		String pageUrl = "https://jsoup.org/../../../aaa/serialized-form.html";
 //		String expectUrl = "https://jsoup.org/apidocs/serialized-form.html";
 //		System.out.println(transUrl(baseUrl, resultUrl));
-		String baseUrl = "https://maven.apache.org/";
-		String pageUrl = "./css/site.css";
-		System.out.println(getAbsUrl(baseUrl,pageUrl));
+//		String baseUrl = "https://maven.apache.org/";
+//		String pageUrl = "./css/site.css";
+//		System.out.println(getAbsUrl(baseUrl,pageUrl));
+		System.out.println(("  abc ").trim());
 	}
 
+	
 	/**
 	 * 获取绝对url
 	 * 
@@ -25,14 +27,22 @@ public class StringUtil {
 	 *            解析到的url
 	 * @return
 	 */
+	//todo url重合问题 如 https://maven.apache.org/plugins/plugins/maven-shade-plugin/
 	public static String getAbsUrl(String baseUrl, String pageUrl) {
+		//pageUrl = pageUrl.trim();
 		if (pageUrl.startsWith(baseUrl) || pageUrl.startsWith("http://") || pageUrl.startsWith("https://")){
 			log.info("abs url :{}",pageUrl);
 			return transUrl(baseUrl,pageUrl);
 		}	
-		if (baseUrl.lastIndexOf("/") != baseUrl.length() - 1) 
+		if (baseUrl.lastIndexOf("/") != baseUrl.length() - 1) {
+			if(baseUrl.endsWith(".html") || baseUrl.endsWith(".js")
+					|| baseUrl.endsWith(".css")){
+				// 以.html,.js,.css结尾的静态资源,返回上一级
+				baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf("/"));
+			}
 			// 如果最后一个字符不是/ ,加上/
 			baseUrl = baseUrl + "/";
+		}
 		if (pageUrl.startsWith("./")) {// 以./开头的url
 			if(pageUrl.length()>2)
 				pageUrl = pageUrl.substring(2,pageUrl.length());
@@ -57,7 +67,7 @@ public class StringUtil {
 	 *            jsoup得到的结果url
 	 * @return 实际的url
 	 */
-	// todo 出现了 https://configure.html 的url，检查是否有问题
+	// todo 出现了 https://configure.html 的url，页面的url无规则
 	public static String transUrl(String baseUrl, String resultUrl) {
 		if (!resultUrl.contains("../"))
 			return resultUrl;

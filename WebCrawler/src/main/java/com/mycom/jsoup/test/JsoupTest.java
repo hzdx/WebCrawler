@@ -1,5 +1,7 @@
 package com.mycom.jsoup.test;
 
+import java.io.File;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -7,14 +9,26 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mycom.webcrawler.FileUtil;
-import com.mycom.webcrawler.StringUtil;
+import com.mycom.webcrawler.util.FileUtil;
+import com.mycom.webcrawler.util.StringUtil;
 
 public class JsoupTest {
 	private Logger log = LoggerFactory.getLogger(FileUtil.class);
 	public static void main(String[] args) throws Exception {
-        String url = "https://maven.apache.org";
-        new JsoupTest().listUrl(url);
+//        String url = "https://maven.apache.org";
+//        new JsoupTest().listUrl(url);
+		//System.out.println("\\s");
+		String url = "http://shanghai.anjuke.com/prop/view/A482253954";
+		File file = new File("log1.txt");
+		//Document doc = Jsoup.parse(file,"UTF-8");
+		Document doc = Jsoup.parse(HttpClientTest.doget(url));
+		//Document doc = Jsoup.connect("http://shanghai.anjuke.com/prop/view/A482253954").get();
+		Elements eles = doc.select("#prop_infor .prop-info-box").select(".p_phrase");//.getElementsByClass("p_phrase");
+		for (Element src : eles) {
+			String field = src.select("dt").text();
+			String value = src.select("dd").text();
+			System.out.println(field+"..." + value);
+		}
     }
 
 	private void listUrl(String url) throws Exception {
