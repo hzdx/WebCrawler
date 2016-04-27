@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 
 import com.mycom.webcrawler.compnent.JsoupParser;
+import com.mycom.webcrawler.compnent.UriFilter;
 import com.mycom.webcrawler.compnent.UrlSetHolder;
 import com.mycom.webcrawler.httpclient.SimpleHttpClientHolder;
 import com.mycom.webcrawler.util.FileUtil;
@@ -23,12 +24,13 @@ public class PropCrawlerLaucher {
 		//初始化JsoupUtil,urlHolder组件
 		JsoupParser jsoupParser = new JsoupParser();
 		UrlSetHolder urlHolder = new UrlSetHolder();
-		urlHolder.setMainUrl("http://shanghai.anjuke.com/prop/view/");
+		urlHolder.setPrefix("http://shanghai.anjuke.com/prop/view/");
 		urlHolder.setCrossDomain(false);
-		urlHolder.addUrl(entryUrl);
-		urlHolder.markUrl(entryUrl);
+		//urlHolder.addUrl(entryUrl);
+		//urlHolder.markUrl(entryUrl);
 		jsoupParser.setUrlHolder(urlHolder);
-		jsoupParser.setPrefix("http://shanghai.anjuke.com/prop/view/");
+		jsoupParser.setFilter(new UriFilter());
+		//jsoupParser.setPrefix("http://shanghai.anjuke.com/prop/view/");
 		
 		//开始处理过程
 		jsoupParser.parseHtml(html, entryUrl);

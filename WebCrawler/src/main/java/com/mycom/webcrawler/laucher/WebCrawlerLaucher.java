@@ -1,6 +1,7 @@
 package com.mycom.webcrawler.laucher;
 
 import com.mycom.webcrawler.compnent.JsoupParser;
+import com.mycom.webcrawler.compnent.UriFilter;
 import com.mycom.webcrawler.compnent.UrlSetHolder;
 import com.mycom.webcrawler.httpclient.HttpClientHolder;
 import com.mycom.webcrawler.model.UrlWrapper;
@@ -10,7 +11,7 @@ public class WebCrawlerLaucher {
 	public static int count = 0;
 
 	public static void main(String[] args) throws Exception {
-		String entryUrl = "http://shanghai.anjuke.com/sale/";
+		String entryUrl = "https://jsoup.org/";
 		String outputDir = "d:/crawler/jsoup/";
 		String html = HttpClientHolder.fetchUrl(entryUrl).getHtml();
 		FileUtil.saveToLocal(html, outputDir, "index.html");
@@ -19,11 +20,12 @@ public class WebCrawlerLaucher {
 		//初始化JsoupUtil,urlHolder组件
 		JsoupParser jsoupParser = new JsoupParser();
 		UrlSetHolder urlHolder = new UrlSetHolder();
-		urlHolder.setMainUrl(entryUrl);
+		urlHolder.setPrefix(entryUrl);
 		urlHolder.setCrossDomain(false);
 		urlHolder.addUrl(entryUrl);
 		urlHolder.markUrl(entryUrl);
 		jsoupParser.setUrlHolder(urlHolder);
+		jsoupParser.setFilter(new UriFilter());
 		
 		//开始处理过程
 		jsoupParser.parseHtml(html, entryUrl);

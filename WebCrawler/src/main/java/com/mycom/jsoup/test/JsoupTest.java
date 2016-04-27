@@ -1,6 +1,7 @@
 package com.mycom.jsoup.test;
 
 import java.io.File;
+import java.net.URI;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,22 +16,30 @@ import com.mycom.webcrawler.util.StringUtil;
 public class JsoupTest {
 	private Logger log = LoggerFactory.getLogger(FileUtil.class);
 	public static void main(String[] args) throws Exception {
-//        String url = "https://maven.apache.org";
-//        new JsoupTest().listUrl(url);
-		//System.out.println("\\s");
-		String url = "http://shanghai.anjuke.com/prop/view/A482253954";
-		File file = new File("log1.txt");
-		//Document doc = Jsoup.parse(file,"UTF-8");
-		Document doc = Jsoup.parse(HttpClientTest.doget(url));
-		//Document doc = Jsoup.connect("http://shanghai.anjuke.com/prop/view/A482253954").get();
-		Elements eles = doc.select("#prop_infor .prop-info-box").select(".p_phrase");//.getElementsByClass("p_phrase");
-		for (Element src : eles) {
-			String field = src.select("dt").text();
-			String value = src.select("dd").text();
-			System.out.println(field+"..." + value);
-		}
+        String url = "https://maven.apache.org/";
+        new JsoupTest().listUrl(url);
+//		String url = "http://shanghai.anjuke.com/prop/view/A482253954";
+//		File file = new File("log1.txt");
+//		//Document doc = Jsoup.parse(file,"UTF-8");
+//		Document doc = Jsoup.parse(HttpClientTest.doget(url));
+//		//Document doc = Jsoup.connect("http://shanghai.anjuke.com/prop/view/A482253954").get();
+//		Elements eles = doc.select("#prop_infor .prop-info-box").select(".p_phrase");//.getElementsByClass("p_phrase");
+//		for (Element src : eles) {
+//			String field = src.select("dt").text();
+//			String value = src.select("dd").text();
+//			System.out.println(field+"..." + value);
+//		}
     }
 
+	private String resolveUrl(String url,String baseUrl){
+		URI baseUri = URI.create(baseUrl);
+		if(!baseUri.getPath().startsWith("/")){
+			//baseUri.
+		}
+		URI finalUri = baseUri.resolve(url);
+		return finalUri.toASCIIString();
+	}
+	
 	private void listUrl(String url) throws Exception {
 		print("Fetching %s...", url);
 
@@ -42,28 +51,18 @@ public class JsoupTest {
 
         for (Element src : media) {
         	String mediaUrl = src.attr("src");
-        	log.info("-----------------------------------------------");
-        	log.info("jsoupParser get orgin url :{}",mediaUrl);
-        	//if(!mediaUrl.startsWith(baseUrl)) continue;//不访问跨域的链接 todo 对跨域的选项
-        	//urlHolder.addUrl(StringUtil.getAbsUrl(baseUrl, mediaUrl));
+        	log.info(resolveUrl(mediaUrl,url));
         	
         }
         for (Element link : imports) {
             String importsUrl = link.attr("href");
-            log.info("-----------------------------------------------");
-            log.info("jsoupParser get orgin url :{}",importsUrl);
-            //if(!importsUrl.startsWith(baseUrl)) continue;
-            //urlHolder.addUrl(StringUtil.getAbsUrl(baseUrl, importsUrl));
+            log.info(resolveUrl(importsUrl,url));
         }
 
         for (Element link : links) {
             String linkUrl = link.attr("href");
-            log.info("-----------------------------------------------");
-            log.info("jsoupParser get orgin url :{}",linkUrl);
-            //if(!linkUrl.startsWith(baseUrl)) continue;
-            //urlHolder.addUrl(StringUtil.getAbsUrl(baseUrl, linkUrl));
+            log.info(resolveUrl(linkUrl,url));
         }
-        //<a href="javascript:;"> 不会添加为链接
 	}
 
     private void print(String msg, Object... args) {

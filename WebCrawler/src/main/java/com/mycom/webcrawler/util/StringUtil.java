@@ -1,26 +1,45 @@
 package com.mycom.webcrawler.util;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Deprecated
 public class StringUtil {
 	private static Logger log = LoggerFactory.getLogger(StringUtil.class);
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws URISyntaxException, MalformedURLException {
 //		String baseUrl = "https://jsoup.org/apidocs/org/jsoup/Connection.html";
 //		String pageUrl = "https://jsoup.org/../../../aaa/serialized-form.html";
 //		String expectUrl = "https://jsoup.org/apidocs/serialized-form.html";
 //		System.out.println(transUrl(baseUrl, resultUrl));
-//		String baseUrl = "https://maven.apache.org/";
-//		String pageUrl = "./css/site.css";
+		String baseUrl = "https://maven.apache.org/aaa/bb/";
+		String pageUrl = "/";
 //		System.out.println(getAbsUrl(baseUrl,pageUrl));
-		System.out.println(("  abc ").trim());
+		//URI url = new URI("https://maven.apache.org/");
+//		String urlString = "http://192.168.21.77:8080/swp/mainPage?aa=11&bb%3D22";  
+//	    URI uri = URI.create(urlString); 
+//	    System.out.println(uri.getPath());  
+//	    System.out.println(uri.getQuery());//解码  
+//	    URL url2 = new URL(urlString);  
+//	    System.out.println(url2.getQuery());//不解码  
+		URI uri = URI.create(baseUrl);
+		URI uri1 = URI.create(pageUrl);
+		System.out.println(uri.resolve(pageUrl));//父路径在前
 	}
 
 	
 	/**
 	 * 获取绝对url
-	 * 
+	 * /开头都是绝对路径
+	 * ./当前目录
+	 * 否则是相对路径，baseUrl以/结尾，finalUrl = baseUrl+ 页面上的相对路径
+	 * baseUrl不是以/结尾 ，finalUrl = baseUrl上一级 + 页面上的路径
+	 * a href="../.././"
 	 * @param baseUrl
 	 *            当前url
 	 * @param relativeUrl

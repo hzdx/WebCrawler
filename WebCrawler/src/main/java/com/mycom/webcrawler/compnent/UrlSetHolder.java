@@ -10,14 +10,15 @@ import org.slf4j.LoggerFactory;
 
 import com.mycom.webcrawler.util.StringUtil;
 
+@SuppressWarnings("deprecation")
 public class UrlSetHolder {
 	private Logger log = LoggerFactory.getLogger(UrlSetHolder.class);
 	private Map<String,Boolean> urlMap = new HashMap<>();
-	private String mainUrl;//主站url
+	private String prefixUrl;//主站url
 	private boolean isCrossDomain = false;//是否跨域
 	
-	public void setMainUrl(String mainUrl) {
-		this.mainUrl = mainUrl;
+	public void setPrefix(String mainUrl) {
+		this.prefixUrl = mainUrl;
 	}
 	public void setCrossDomain(boolean isCrossDomain) {
 		this.isCrossDomain = isCrossDomain;
@@ -28,11 +29,10 @@ public class UrlSetHolder {
 	public void addUrl(String url){
 		if(StringUtil.isBlank(url)) return;
 		if(!isCrossDomain){//不跨域，非主站地址不进行解析。
-			if(!url.startsWith(mainUrl)) return;
+			if(!url.startsWith(prefixUrl)) return;
 		}
 		if(url.contains("mailto")) return;
 		if(urlMap.keySet().contains(url)) return;
-		//url = filterUrl0(url);
 		log.info("urlHolder put :{}",url);
 		urlMap.put(url, true);//还未必解析为ture
 	}

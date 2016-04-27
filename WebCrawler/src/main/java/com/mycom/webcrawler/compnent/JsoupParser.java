@@ -1,5 +1,7 @@
 package com.mycom.webcrawler.compnent;
 
+import java.net.URI;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -7,16 +9,15 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mycom.webcrawler.util.StringUtil;
-
 
 public class JsoupParser {
 	private Logger log = LoggerFactory.getLogger(JsoupParser.class);
-	private String prefix;
 	public UrlSetHolder urlHolder;
+	private UriFilter filter;
+	
 
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
+	public void setFilter(UriFilter filter) {
+		this.filter = filter;
 	}
 
 	public void setUrlHolder(UrlSetHolder urlHolder) {
@@ -24,14 +25,27 @@ public class JsoupParser {
 	}
 
 	public static void main(String[] args) {
+		JsoupParser parser = new JsoupParser();
+		System.out.println(parser.resolveUrl(
+				"http://apache.fayea.com/","https://maven.apache.org/"));
 	}
 
-	private void processUrl(String url,String baseUrl){
-		String link = cleanUrl(url);
-    	log.info("-----------------------------------------------");
-    	log.info("jsoupParser get orgin url :{}",link);
-    	//if(!mediaUrl.startsWith(baseUrl)) continue;//不访问跨域的链接 todo 对跨域的选项
-    	urlHolder.addUrl(StringUtil.getAbsUrl(baseUrl, link));
+	private String resolveUrl(String url,String baseUrl){
+		URI baseUri = URI.create(baseUrl);
+		URI finalUri = baseUri.resolve(url);
+		return finalUri.toASCIIString();
+	}
+	
+	private void processUrl(String url,String baseUrl){		
+		if(filter == null) filter = new UriFilter();
+		url = filter.filter(url);
+		if(url != null){
+	    	log.info("-----------------------------------------------");
+	    	log.info("jsoupParser get orgin url :{}",url);
+	    	//if(!mediaUrl.startsWith(baseUrl)) continue;
+	    	//不访问跨域的链接:对跨域的选项 由urlHolder控制
+	    	urlHolder.addUrl(resolveUrl(url,baseUrl));
+		}
 	}
 	
 	private void processMedia(Document doc,String baseUrl){
@@ -45,9 +59,6 @@ public class JsoupParser {
 		Elements links = doc.select("a[href]");
         for (Element link : links) {
         	String url = link.attr("href");
-        	if(prefix != null){
-        		if(!url.startsWith(prefix)) continue;
-        	}
         	processUrl(url,baseUrl);
         }
 	}
@@ -80,6 +91,7 @@ public class JsoupParser {
 	 * @param url
 	 * @return
 	 */
+	@Deprecated
 	private String cleanUrl(String url){
 		String url1 = url.trim().replace("[","")
 				.replace("\"", "").replace("\\", "/");
