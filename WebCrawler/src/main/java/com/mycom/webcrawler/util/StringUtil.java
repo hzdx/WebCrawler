@@ -1,61 +1,69 @@
 package com.mycom.webcrawler.util;
 
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Deprecated
 public class StringUtil {
 	private static Logger log = LoggerFactory.getLogger(StringUtil.class);
 
-	public static void main(String[] args) throws URISyntaxException, MalformedURLException {
-//		String baseUrl = "https://jsoup.org/apidocs/org/jsoup/Connection.html";
-//		String pageUrl = "https://jsoup.org/../../../aaa/serialized-form.html";
-//		String expectUrl = "https://jsoup.org/apidocs/serialized-form.html";
-//		System.out.println(transUrl(baseUrl, resultUrl));
-		String baseUrl = "https://maven.apache.org/aaa/bb/";
-		String pageUrl = "/";
-//		System.out.println(getAbsUrl(baseUrl,pageUrl));
-		//URI url = new URI("https://maven.apache.org/");
-//		String urlString = "http://192.168.21.77:8080/swp/mainPage?aa=11&bb%3D22";  
-//	    URI uri = URI.create(urlString); 
-//	    System.out.println(uri.getPath());  
-//	    System.out.println(uri.getQuery());//解码  
-//	    URL url2 = new URL(urlString);  
-//	    System.out.println(url2.getQuery());//不解码  
-		URI uri = URI.create(baseUrl);
-		URI uri1 = URI.create(pageUrl);
-		System.out.println(uri.resolve(pageUrl));//父路径在前
+	/**
+	 * 整理url,去掉空格和特殊符号
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public static String cleanUrl(String uri) {
+		uri = uri.replace("[", "").replace("\"", "").replace("\\", "/");
+		if (uri.contains("?")) {
+			int index = uri.indexOf("?");
+			uri = uri.substring(0, index);
+		}
+		if (uri.contains("#")) {
+			int index = uri.indexOf("#");
+			uri = uri.substring(0, index);
+		}
+		if (uri.startsWith("javascript"))
+			return null;
+		if (uri.contains("mailto"))
+			return null;
+		return uri;
 	}
 
-	
+	/**
+	 * 从页面上的url解析出绝对的url
+	 * 
+	 * @param url
+	 *            页面上的url,可能是相对路径
+	 * @param baseUrl
+	 *            当前页面的url
+	 * @return
+	 */
+	public static String resolveUrl(String url, String baseUrl) {
+		URI baseUri = URI.create(baseUrl);
+		URI finalUri = baseUri.resolve(url);
+		return finalUri.toASCIIString();
+	}
+
 	/**
 	 * 获取绝对url
-	 * /开头都是绝对路径
-	 * ./当前目录
-	 * 否则是相对路径，baseUrl以/结尾，finalUrl = baseUrl+ 页面上的相对路径
-	 * baseUrl不是以/结尾 ，finalUrl = baseUrl上一级 + 页面上的路径
-	 * a href="../.././"
+	 * 
 	 * @param baseUrl
 	 *            当前url
 	 * @param relativeUrl
 	 *            解析到的url
 	 * @return
 	 */
-	//todo url重合问题 如 https://maven.apache.org/plugins/plugins/maven-shade-plugin/
+	@Deprecated
 	public static String getAbsUrl(String baseUrl, String pageUrl) {
-		//pageUrl = pageUrl.trim();
-		if (pageUrl.startsWith(baseUrl) || pageUrl.startsWith("http://") || pageUrl.startsWith("https://")){
-			log.info("abs url :{}",pageUrl);
-			return transUrl(baseUrl,pageUrl);
-		}	
+		// pageUrl = pageUrl.trim();
+		if (pageUrl.startsWith(baseUrl) || pageUrl.startsWith("http://") || pageUrl.startsWith("https://")) {
+			log.info("abs url :{}", pageUrl);
+			return transUrl(baseUrl, pageUrl);
+		}
 		if (baseUrl.lastIndexOf("/") != baseUrl.length() - 1) {
-			if(baseUrl.endsWith(".html") || baseUrl.endsWith(".js")
-					|| baseUrl.endsWith(".css")){
+			if (baseUrl.endsWith(".html") || baseUrl.endsWith(".js") || baseUrl.endsWith(".css")) {
 				// 以.html,.js,.css结尾的静态资源,返回上一级
 				baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf("/"));
 			}
@@ -63,22 +71,24 @@ public class StringUtil {
 			baseUrl = baseUrl + "/";
 		}
 		if (pageUrl.startsWith("./")) {// 以./开头的url
-			if(pageUrl.length()>2)
-				pageUrl = pageUrl.substring(2,pageUrl.length());
-			else pageUrl = "";
+			if (pageUrl.length() > 2)
+				pageUrl = pageUrl.substring(2, pageUrl.length());
+			else
+				pageUrl = "";
 		}
-		if(pageUrl.startsWith("/")){	//以/开头的url
-			if(pageUrl.length()>1)
-				pageUrl = pageUrl.substring(1,pageUrl.length());
-			else pageUrl = "";
+		if (pageUrl.startsWith("/")) { // 以/开头的url
+			if (pageUrl.length() > 1)
+				pageUrl = pageUrl.substring(1, pageUrl.length());
+			else
+				pageUrl = "";
 		}
 		String combineUrl = baseUrl + pageUrl;
-		log.info("combine url :{}",combineUrl);
-		return transUrl(baseUrl,combineUrl);
+		log.info("combine url :{}", combineUrl);
+		return transUrl(baseUrl, combineUrl);
 	}
 
 	/**
-	 * 对类似 /../../../serialized-form.html 类型的链接进行转换<br>
+	 * 对类似 ../../serialized-form.html 类型的链接进行转换<br>
 	 * 
 	 * @param baseUrl
 	 *            入口url
@@ -86,7 +96,7 @@ public class StringUtil {
 	 *            jsoup得到的结果url
 	 * @return 实际的url
 	 */
-	// todo 出现了 https://configure.html 的url，页面的url无规则
+	@Deprecated
 	public static String transUrl(String baseUrl, String resultUrl) {
 		if (!resultUrl.contains("../"))
 			return resultUrl;
@@ -104,7 +114,7 @@ public class StringUtil {
 			baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
 		arr = baseUrl.split("/", -1);
 		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < arr.length - n -1; i++) {
+		for (int i = 0; i < arr.length - n - 1; i++) {
 			sb.append(arr[i] + "/");
 		}
 		// System.out.println(sb.toString());

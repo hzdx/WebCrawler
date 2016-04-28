@@ -1,4 +1,4 @@
-package com.mycom.webcrawler.persistence;
+package com.mycom.webcrawler;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,8 +10,10 @@ import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 
-public class Dao {
-	public static void testDb() throws ClassNotFoundException, SQLException, IOException {
+import com.mycom.webcrawler.persistence.DataSource;
+
+public class DaoTest {
+	public static void testDb() throws Exception {
 
 		ResultSetHandler<Object[]> h = new ResultSetHandler<Object[]>() {
 			public Object[] handle(ResultSet rs) throws SQLException {

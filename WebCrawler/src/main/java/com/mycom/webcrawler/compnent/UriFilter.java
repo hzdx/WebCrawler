@@ -1,5 +1,6 @@
 package com.mycom.webcrawler.compnent;
 
+@Deprecated
 public class UriFilter {
 	
 	public String filter(String uri){

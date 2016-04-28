@@ -1,4 +1,4 @@
-package com.mycom.webcrawler.compnent;
+package com.mycom.webcrawler.urlholder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,14 +11,14 @@ import org.slf4j.LoggerFactory;
 import com.mycom.webcrawler.util.StringUtil;
 
 @SuppressWarnings("deprecation")
-public class UrlSetHolder {
-	private Logger log = LoggerFactory.getLogger(UrlSetHolder.class);
+public class UrlHolder extends AbstractUrlHolder{
+	private Logger log = LoggerFactory.getLogger(UrlHolder.class);
 	private Map<String,Boolean> urlMap = new HashMap<>();
-	private String prefixUrl;//主站url
+	private String allowedUrlprefix;//主站url
 	private boolean isCrossDomain = false;//是否跨域
 	
 	public void setPrefix(String mainUrl) {
-		this.prefixUrl = mainUrl;
+		this.allowedUrlprefix = mainUrl;
 	}
 	public void setCrossDomain(boolean isCrossDomain) {
 		this.isCrossDomain = isCrossDomain;
@@ -27,11 +27,11 @@ public class UrlSetHolder {
 
 
 	public void addUrl(String url){
-		if(StringUtil.isBlank(url)) return;
-		if(!isCrossDomain){//不跨域，非主站地址不进行解析。
-			if(!url.startsWith(prefixUrl)) return;
-		}
-		if(url.contains("mailto")) return;
+//		if(StringUtil.isBlank(url)) return;
+//		if(!isCrossDomain){//不跨域，非主站地址不进行解析。
+//			if(!url.startsWith(allowedUrlprefix)) return;
+//		}
+//		if(url.contains("mailto")) return;
 		if(urlMap.keySet().contains(url)) return;
 		log.info("urlHolder put :{}",url);
 		urlMap.put(url, true);//还未必解析为ture

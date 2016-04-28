@@ -2,9 +2,9 @@ package com.mycom.webcrawler.laucher;
 
 import com.mycom.webcrawler.compnent.JsoupParser;
 import com.mycom.webcrawler.compnent.UriFilter;
-import com.mycom.webcrawler.compnent.UrlSetHolder;
 import com.mycom.webcrawler.httpclient.HttpClientHolder;
 import com.mycom.webcrawler.model.UrlWrapper;
+import com.mycom.webcrawler.urlholder.UrlHolder;
 import com.mycom.webcrawler.util.FileUtil;
 
 public class WebCrawlerLaucher {
@@ -19,22 +19,22 @@ public class WebCrawlerLaucher {
 		
 		//初始化JsoupUtil,urlHolder组件
 		JsoupParser jsoupParser = new JsoupParser();
-		UrlSetHolder urlHolder = new UrlSetHolder();
+		UrlHolder urlHolder = new UrlHolder();
 		urlHolder.setPrefix(entryUrl);
 		urlHolder.setCrossDomain(false);
 		urlHolder.addUrl(entryUrl);
 		urlHolder.markUrl(entryUrl);
 		jsoupParser.setUrlHolder(urlHolder);
-		jsoupParser.setFilter(new UriFilter());
+		//jsoupParser.setFilter(new UriFilter());
 		
 		//开始处理过程
 		jsoupParser.parseHtml(html, entryUrl);
-		loop(jsoupParser, urlHolder, entryUrl,outputDir);
+		loops(jsoupParser, urlHolder, entryUrl,outputDir);
 		HttpClientHolder.close();
 		System.out.println("total save file num :" + count);
 	}
 
-	public static void loop(JsoupParser jsoupParser, UrlSetHolder urlHolder, String entryUrl,
+	public static void loops(JsoupParser jsoupParser, UrlHolder urlHolder, String entryUrl,
 			String outputDir) throws Exception {
 		for (String url : urlHolder.getUncrawlUrl()) {
 			UrlWrapper wrapper = HttpClientHolder.fetchUrl(url);
@@ -47,7 +47,7 @@ public class WebCrawlerLaucher {
 		}
 
 		if (!urlHolder.isCompleted())
-			loop(jsoupParser, urlHolder, entryUrl, outputDir);
+			loops(jsoupParser, urlHolder, entryUrl, outputDir);
 
 	}
 

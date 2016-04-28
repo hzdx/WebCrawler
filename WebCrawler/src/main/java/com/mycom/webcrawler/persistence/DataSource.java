@@ -1,6 +1,5 @@
 package com.mycom.webcrawler.persistence;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -15,7 +14,7 @@ public class DataSource {
 		if(dataSource != null) dataSource.close();
 	}
 
-	public static BasicDataSource getInstance() throws ClassNotFoundException, IOException {
+	public static BasicDataSource getInstance() throws Exception {
 		if (dataSource == null) {//初始化dataSource
 			synchronized (DataSource.class) {
 				if (dataSource == null) {
@@ -35,9 +34,9 @@ public class DataSource {
 					
 					dataSource.setInitialSize(5); // 初始的连接数；  
 					dataSource.setMaxTotal(10);  
-					dataSource.setMaxIdle(5);  
-					dataSource.setMaxWaitMillis(30*1000);  
 					dataSource.setMinIdle(5);
+					dataSource.setMaxIdle(10);  
+					dataSource.setMaxWaitMillis(30*1000);  
 				}
 			}
 		} 

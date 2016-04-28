@@ -6,6 +6,15 @@ import org.junit.Test;
 
 public class SimpleTest {
 	@Test
+	public void testUrl() throws Exception {
+		String baseUrl = "https://maven.apache.org/aaa/bb/";
+		String pageUrl = "/";
+		URI uri = URI.create(baseUrl);
+		URI uri1 = URI.create(pageUrl);
+		System.out.println(uri.resolve(pageUrl));// 父路径在前
+	}
+	
+	@Test
 	public void testSplit(){
 		String str = "https://jsoup.org/aa/../serialized-form.html";
 		System.out.println(str.contains("../"));

@@ -5,8 +5,8 @@ import java.io.FileWriter;
 
 import com.mycom.webcrawler.compnent.JsoupParser;
 import com.mycom.webcrawler.compnent.UriFilter;
-import com.mycom.webcrawler.compnent.UrlSetHolder;
 import com.mycom.webcrawler.httpclient.SimpleHttpClientHolder;
+import com.mycom.webcrawler.urlholder.UrlHolder;
 import com.mycom.webcrawler.util.FileUtil;
 
 public class PropCrawlerLaucher {
@@ -23,25 +23,25 @@ public class PropCrawlerLaucher {
 		bw = new BufferedWriter(new FileWriter("prop.txt"));
 		//初始化JsoupUtil,urlHolder组件
 		JsoupParser jsoupParser = new JsoupParser();
-		UrlSetHolder urlHolder = new UrlSetHolder();
+		UrlHolder urlHolder = new UrlHolder();
 		urlHolder.setPrefix("http://shanghai.anjuke.com/prop/view/");
 		urlHolder.setCrossDomain(false);
 		//urlHolder.addUrl(entryUrl);
 		//urlHolder.markUrl(entryUrl);
 		jsoupParser.setUrlHolder(urlHolder);
-		jsoupParser.setFilter(new UriFilter());
+		//jsoupParser.setFilter(new UriFilter());
 		//jsoupParser.setPrefix("http://shanghai.anjuke.com/prop/view/");
 		
 		//开始处理过程
 		jsoupParser.parseHtml(html, entryUrl);
-		loop(jsoupParser, urlHolder, entryUrl,outputDir);
+		loops(jsoupParser, urlHolder, entryUrl,outputDir);
 		SimpleHttpClientHolder.close();
 		bw.flush();
 		bw.close();
 		System.out.println("total save file num :" + count);
 	}
 
-	public static void loop(JsoupParser jsoupParser, UrlSetHolder urlHolder, String entryUrl,
+	public static void loops(JsoupParser jsoupParser, UrlHolder urlHolder, String entryUrl,
 			String outputDir) throws Exception {
 		for (String url : urlHolder.getUncrawlUrl()) {
 			String html = SimpleHttpClientHolder.fetchUrl(url);
@@ -56,7 +56,7 @@ public class PropCrawlerLaucher {
 		}
 
 		if (!urlHolder.isCompleted())
-			loop(jsoupParser, urlHolder, entryUrl, outputDir);
+			loops(jsoupParser, urlHolder, entryUrl, outputDir);
 
 	}
 
