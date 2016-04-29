@@ -3,23 +3,28 @@ package com.mycom.webcrawler.compnent;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mycom.webcrawler.httpclient.SimpleHttpClientHolder;
 
 public class CrawlerRunner implements Runnable {
+	private Logger log = LoggerFactory.getLogger(CrawlerRunner.class);
 	private BlockingQueue<String> urlQueue;
 	private JsoupParser parser;
-	private String baseUrl;
 
 	@Override
 	public void run() {
 		while (true) {
 			try {
 				String url = urlQueue.poll(10, TimeUnit.SECONDS);
-				String html = SimpleHttpClientHolder.fetchUrl(url);
-				parser.parseHtmlOnlyLink(html, baseUrl);
+				if (url != null) {
+					String html = SimpleHttpClientHolder.fetchUrl(url);
+					parser.parseHtmlOnlyLink(html, url);
+				} else
+					break;
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error(e.getMessage());
 			}
 		}
 
@@ -40,15 +45,5 @@ public class CrawlerRunner implements Runnable {
 	public void setParser(JsoupParser parser) {
 		this.parser = parser;
 	}
-
-	public String getBaseUrl() {
-		return baseUrl;
-	}
-
-	public void setBaseUrl(String baseUrl) {
-		this.baseUrl = baseUrl;
-	}
-	
-	
 
 }

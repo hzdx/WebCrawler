@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import com.mycom.webcrawler.util.StringUtil;
 
-@SuppressWarnings("deprecation")
 public class UrlHolder extends AbstractUrlHolder{
 	private Logger log = LoggerFactory.getLogger(UrlHolder.class);
 	private Map<String,Boolean> urlMap = new HashMap<>();

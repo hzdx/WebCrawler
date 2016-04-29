@@ -20,7 +20,7 @@
         <param name="Append" value="true"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{ISO8601}-- %p -- %m%n"/>
+            <param name="ConversionPattern" value="%d{ISO8601}--%t %p -- %m%n"/>
         </layout>
         <filter class="org.apache.log4j.varia.LevelRangeFilter">
             <param name="LevelMin" value="INFO"/>
@@ -33,7 +33,7 @@
         <param name="Append" value="true"/>
         <param name="DatePattern" value="'.'yyyy-MM-dd"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%c %d{ISO8601}-- %p -- %m%n"/>
+            <param name="ConversionPattern" value="%d{ISO8601}--%c{2\} %t -%p -- %m%n"/>
         </layout>
         <filter class="org.apache.log4j.varia.LevelRangeFilter">
             <param name="LevelMin" value="ERROR"/>

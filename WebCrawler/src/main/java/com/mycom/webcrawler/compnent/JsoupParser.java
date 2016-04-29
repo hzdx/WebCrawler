@@ -29,16 +29,18 @@ public class JsoupParser {
 
 	private void processUrl(String url, String baseUrl) throws Exception {
 		url = StringUtil.cleanUrl(url);
+		if(url != null){
 		log.debug("-----------------------------------------------");
 		log.debug("jsoup get orgin url :{}", url);
 		// 不访问跨域的链接:对跨域的选项 由urlHolder控制
 		String finalUrl = StringUtil.resolveUrl(url, baseUrl);
 		if(prefixUrl != null){
 			if(!finalUrl.startsWith(prefixUrl)) return;
-		}		
-		urlHolder.addUrl(finalUrl);
+		}
+			urlHolder.addUrl(finalUrl);
 		if (htmlHandler != null && htmlHandler instanceof LinkHandler) {
 			((LinkHandler) htmlHandler).saveWantedUrl(finalUrl);
+		}
 		}
 	}
 

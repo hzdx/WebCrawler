@@ -28,39 +28,25 @@ public class MutiThreadCrawlerLaucher {
 		ConcurrentUrlHolder urlHolder = new ConcurrentUrlHolder();// 存放要解析的url
 		urlHolder.setUrlQueue(urlQueue);
 		jsoupParser.setUrlHolder(urlHolder);
-		//jsoupParser.setFilter(new UriFilter());
-		//jsoupParser.setHtmlHandler(new LinkHandler(targetUrlPrefix));
+		jsoupParser.setPrefixUrl(entryUrl);
+		// jsoupParser.setFilter(new UriFilter());
+		// jsoupParser.setHtmlHandler(new LinkHandler(targetUrlPrefix));
 		// 处理链接
-		
+
 		// 第一次解析
 		jsoupParser.parseHtmlOnlyLink(html, entryUrl);
-		
-		CrawlerRunner runner = new CrawlerRunner();
-		runner.setParser(jsoupParser);
-		runner.setUrlQueue(urlQueue);
-		runner.setBaseUrl(null);
+
 		int thNum = 8;
 		ExecutorService service = Executors.newFixedThreadPool(thNum);
-		for(int i=0;i<thNum;i++){
+		for (int i = 0; i < thNum; i++) {
+			CrawlerRunner runner = new CrawlerRunner();
+			runner.setParser(jsoupParser);
+			runner.setUrlQueue(urlQueue);
 			service.submit(runner);
 		}
 
-		loop(jsoupParser, urlHolder);
+		service.shutdown();
 		HttpClientHolder.close();
-	}
-
-	public static void loop(JsoupParser jsoupParser, AbstractUrlHolder urlHolder) throws Exception {
-//		for (String url : urlHolder.getUncrawlUrl()) {
-//			String html = SimpleHttpClientHolder.fetchUrl(url);
-//			if (html != null) {
-//				jsoupParser.parseHtml(html, url);
-//			}
-//			urlHolder.markUrl(url);
-//		}
-//
-//		if (!urlHolder.isCompleted())
-//			loop(jsoupParser, urlHolder);
-
 	}
 
 }

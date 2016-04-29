@@ -41,6 +41,9 @@ public class StringUtil {
 	 * @return
 	 */
 	public static String resolveUrl(String url, String baseUrl) {
+		if(StringUtil.isBlank(url)){
+			System.out.println("...");
+		}
 		URI baseUri = URI.create(baseUrl);
 		URI finalUri = baseUri.resolve(url);
 		return finalUri.toASCIIString();
