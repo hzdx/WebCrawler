@@ -20,8 +20,8 @@ public class WebCrawlerLaucher {
 		//初始化JsoupUtil,urlHolder组件
 		JsoupParser jsoupParser = new JsoupParser();
 		UrlHolder urlHolder = new UrlHolder();
-		urlHolder.setPrefix(entryUrl);
-		urlHolder.setCrossDomain(false);
+		/*urlHolder.setPrefix(entryUrl);
+		urlHolder.setCrossDomain(false);*/
 		urlHolder.addUrl(entryUrl);
 		urlHolder.markUrl(entryUrl);
 		jsoupParser.setUrlHolder(urlHolder);

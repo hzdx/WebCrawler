@@ -13,15 +13,15 @@ import com.mycom.webcrawler.util.StringUtil;
 public class UrlHolder extends AbstractUrlHolder{
 	private Logger log = LoggerFactory.getLogger(UrlHolder.class);
 	private Map<String,Boolean> urlMap = new HashMap<>();
-	private String allowedUrlprefix;//主站url
-	private boolean isCrossDomain = false;//是否跨域
+//	private String allowedUrlprefix;//主站url
+//	private boolean isCrossDomain = false;//是否跨域
 	
-	public void setPrefix(String mainUrl) {
-		this.allowedUrlprefix = mainUrl;
-	}
-	public void setCrossDomain(boolean isCrossDomain) {
-		this.isCrossDomain = isCrossDomain;
-	}
+//	public void setPrefix(String mainUrl) {
+//		this.allowedUrlprefix = mainUrl;
+//	}
+//	public void setCrossDomain(boolean isCrossDomain) {
+//		this.isCrossDomain = isCrossDomain;
+//	}
 
 
 

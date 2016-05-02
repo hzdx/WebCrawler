@@ -24,8 +24,8 @@ public class PropCrawlerLaucher {
 		//初始化JsoupUtil,urlHolder组件
 		JsoupParser jsoupParser = new JsoupParser();
 		UrlHolder urlHolder = new UrlHolder();
-		urlHolder.setPrefix("http://shanghai.anjuke.com/prop/view/");
-		urlHolder.setCrossDomain(false);
+		/*urlHolder.setPrefix("http://shanghai.anjuke.com/prop/view/");
+		urlHolder.setCrossDomain(false);*/
 		//urlHolder.addUrl(entryUrl);
 		//urlHolder.markUrl(entryUrl);
 		jsoupParser.setUrlHolder(urlHolder);

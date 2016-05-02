@@ -29,18 +29,18 @@ public class JsoupParser {
 
 	private void processUrl(String url, String baseUrl) throws Exception {
 		url = StringUtil.cleanUrl(url);
-		if(url != null){
-		log.debug("-----------------------------------------------");
-		log.debug("jsoup get orgin url :{}", url);
-		// 不访问跨域的链接:对跨域的选项 由urlHolder控制
-		String finalUrl = StringUtil.resolveUrl(url, baseUrl);
-		if(prefixUrl != null){
-			if(!finalUrl.startsWith(prefixUrl)) return;
-		}
-			urlHolder.addUrl(finalUrl);
-		if (htmlHandler != null && htmlHandler instanceof LinkHandler) {
-			((LinkHandler) htmlHandler).saveWantedUrl(finalUrl);
-		}
+		if (url != null) {
+			log.debug("-----------------------------------------------");
+			log.debug("jsoup get orgin url :{}", url);
+			// 不访问跨域的链接:对跨域的选项 由urlHolder控制
+			String finalUrl = StringUtil.resolveUrl(url, baseUrl);
+			if (htmlHandler != null && htmlHandler instanceof LinkHandler) {
+				((LinkHandler) htmlHandler).saveWantedUrl(finalUrl);
+			}//实际对页面的处理
+			if (prefixUrl != null) {
+				if (finalUrl.startsWith(prefixUrl))
+					urlHolder.addUrl(finalUrl);
+			}
 		}
 	}
 
@@ -70,7 +70,7 @@ public class JsoupParser {
 		processLink(doc, baseUrl);
 
 	}
-	
+
 	public void setPrefixUrl(String prefixUrl) {
 		this.prefixUrl = prefixUrl;
 	}
@@ -112,5 +112,4 @@ public class JsoupParser {
 		}
 	}
 
-	
 }
