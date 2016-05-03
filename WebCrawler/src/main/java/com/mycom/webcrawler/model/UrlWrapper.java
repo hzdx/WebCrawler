@@ -6,21 +6,28 @@ package com.mycom.webcrawler.model;
 public class UrlWrapper {
 	private String url;
 	private String html;
+
 	public String getUrl() {
 		return url;
 	}
+
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
 	public String getHtml() {
 		return html;
 	}
+
 	public void setHtml(String html) {
 		this.html = html;
 	}
+
 	public UrlWrapper(String url, String html) {
 		this.url = url;
 		this.html = html;
 	}
-	public UrlWrapper(){}
+
+	public UrlWrapper() {
+	}
 }

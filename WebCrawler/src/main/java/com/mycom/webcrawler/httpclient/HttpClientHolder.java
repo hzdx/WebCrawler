@@ -24,7 +24,7 @@ import com.mycom.webcrawler.model.UrlWrapper;
 
 public class HttpClientHolder {
 	private static Logger log = LoggerFactory.getLogger(HttpClientHolder.class);
-	
+
 	private static RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(10 * 1000)
 			.setConnectionRequestTimeout(10 * 1000).setConnectTimeout(10 * 1000).build();
 	private static HttpRequestRetryHandler retryHandler = new WebCrawlerRetryHandler();
@@ -44,7 +44,7 @@ public class HttpClientHolder {
 			log.info("status :{}", status);
 
 			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK && entity != null) {
-				//todo read timeout 估计因为是加了 HttpClientContext
+				// todo read timeout 估计因为是加了 HttpClientContext
 				UrlWrapper wrapper = new UrlWrapper();
 				// 获取重定向之后的url
 				HttpHost target = context.getTargetHost();
@@ -68,7 +68,7 @@ public class HttpClientHolder {
 			response.close();
 		}
 	}
-	
+
 	public static HttpClient getInstance() {
 		return httpClient;
 	}

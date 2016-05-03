@@ -24,9 +24,7 @@ public class StringUtil {
 			int index = uri.indexOf("#");
 			uri = uri.substring(0, index);
 		}
-		if (uri.startsWith("javascript"))
-			return null;
-		if (uri.contains("mailto"))
+		if (uri.startsWith("javascript") || uri.contains("mailto"))
 			return null;
 		return uri;
 	}
@@ -41,9 +39,6 @@ public class StringUtil {
 	 * @return
 	 */
 	public static String resolveUrl(String url, String baseUrl) {
-		if(StringUtil.isBlank(url)){
-			System.out.println("...");
-		}
 		URI baseUri = URI.create(baseUrl);
 		URI finalUri = baseUri.resolve(url);
 		return finalUri.toASCIIString();

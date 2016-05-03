@@ -1,30 +1,23 @@
 package com.mycom.webcrawler.httpclient;
 
 import java.io.IOException;
-import java.net.URI;
-import java.util.List;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.client.utils.URIUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mycom.webcrawler.model.UrlWrapper;
-
 public class SimpleHttpClientHolder {
 	private static Logger log = LoggerFactory.getLogger(SimpleHttpClientHolder.class);
-	
+
 	private static RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(10 * 1000)
 			.setConnectionRequestTimeout(10 * 1000).setConnectTimeout(10 * 1000).build();
 	private static HttpRequestRetryHandler retryHandler = new WebCrawlerRetryHandler();
@@ -42,7 +35,7 @@ public class SimpleHttpClientHolder {
 			log.info("status :{}", status);
 
 			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK && entity != null) {
-				
+
 				String content = EntityUtils.toString(entity);
 				return content;
 			} else {
@@ -53,7 +46,7 @@ public class SimpleHttpClientHolder {
 			response.close();
 		}
 	}
-	
+
 	public static HttpClient getInstance() {
 		return httpClient;
 	}

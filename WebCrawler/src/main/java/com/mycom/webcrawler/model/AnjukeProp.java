@@ -56,20 +56,20 @@ public class AnjukeProp {
 		this.salePrice = parseText(prop.getProperty("售价"), "万");
 		this.downPay = parseText(prop.getProperty("参考首付"), "万");
 		this.unitPrice = parseText(prop.getProperty("单价"), "元");
-		this.community = splitText(prop.getProperty("所在小区")," ");
+		this.community = splitText(prop.getProperty("所在小区"), " ");
 		this.position = prop.getProperty("位置");
 		this.roomNum = parseText0(prop.getProperty("房型"), null, "室");
 		this.hallNum = parseText0(prop.getProperty("房型"), "室", "厅");
 		this.toiletNum = parseText0(prop.getProperty("房型"), "厅", "卫");
-		this.acreage = parseText(prop.getProperty("面积"),"平米");
+		this.acreage = parseText(prop.getProperty("面积"), "平米");
 		this.orientation = prop.getProperty("朝向");
 		try {
 			this.totalFloor = Integer.parseInt(prop.getProperty("楼层").split("/")[1]);
-		} catch (NumberFormatException e) {
-		}//todo hander exception
+		} catch (Exception e) {
+		} // todo hander exception
 		try {
 			this.floor = Integer.parseInt(prop.getProperty("楼层").split("/")[0]);
-		} catch (NumberFormatException e) {
+		} catch (Exception e) {
 		}
 		this.decoration = prop.getProperty("装修");
 		this.type = prop.getProperty("类型");
@@ -93,6 +93,7 @@ public class AnjukeProp {
 	private int floor;// 楼层
 	private String decoration;// 装修
 	private String type;// 类型
+
 	public String getTitle() {
 		return title;
 	}
@@ -220,7 +221,5 @@ public class AnjukeProp {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	
 
 }

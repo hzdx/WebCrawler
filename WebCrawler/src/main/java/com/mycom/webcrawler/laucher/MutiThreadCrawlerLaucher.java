@@ -20,22 +20,22 @@ public class MutiThreadCrawlerLaucher {
 		String html = SimpleHttpClientHolder.fetchUrl(entryUrl);
 
 		BlockingQueue<String> urlQueue = new LinkedBlockingQueue<>();
-		// 初始化JsoupUtil,urlHolder组件
+		// 初始化jsoupParser,urlHolder组件
 		JsoupParser jsoupParser = new JsoupParser();
 		ConcurrentUrlHolder urlHolder = new ConcurrentUrlHolder();// 存放要解析的url
 		urlHolder.setUrlQueue(urlQueue);
 		urlHolder.getUrlSet().add(entryUrl);
 		jsoupParser.setUrlHolder(urlHolder);
 		jsoupParser.setPrefixUrl(entryUrl);
-		 jsoupParser.setHtmlHandler(new LinkHandler(targetUrlPrefix));
+		jsoupParser.setHtmlHandler(new LinkHandler(targetUrlPrefix));
 		// 处理链接
 
 		// 第一次解析
 		jsoupParser.parseHtmlOnlyLink(html, entryUrl);
 
-		int thNum = 8;
-		ExecutorService service = Executors.newFixedThreadPool(thNum);
-		for (int i = 0; i < thNum; i++) {
+		int threadNum = 8;
+		ExecutorService service = Executors.newFixedThreadPool(threadNum);
+		for (int i = 0; i < threadNum; i++) {
 			CrawlerRunner runner = new CrawlerRunner();
 			runner.setParser(jsoupParser);
 			runner.setUrlQueue(urlQueue);

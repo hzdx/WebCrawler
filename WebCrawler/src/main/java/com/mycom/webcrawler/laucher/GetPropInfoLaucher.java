@@ -16,7 +16,7 @@ import com.mycom.webcrawler.model.AnjukeProp;
 import com.mycom.webcrawler.persistence.CommonDao;
 
 public class GetPropInfoLaucher {
-
+	// 根据获得的url，收集房源信息。问题：多次请求后，需要输入图片验证码才能访问网页.
 	public static void main(String[] args) throws Exception {
 		List<Object[]> urlList = CommonDao.select("select distinct url from prop_url");
 		List<String> urlStrList = new ArrayList<>();
@@ -28,7 +28,8 @@ public class GetPropInfoLaucher {
 				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		int threadNum = 8;
 		ExecutorService service = Executors.newFixedThreadPool(threadNum);
-		int part = urlStrList.size() % threadNum == 0 ? urlStrList.size() / threadNum : urlStrList.size() / threadNum + 1;
+		int part = urlStrList.size() % threadNum == 0 ? urlStrList.size() / threadNum
+				: urlStrList.size() / threadNum + 1;
 		for (int i = 0; i < threadNum; i++) {
 			int startIndex = part * i;
 			int endIndex = part * (i + 1);

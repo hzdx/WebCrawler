@@ -1,6 +1,5 @@
 package com.mycom.jsoup.test;
 
-import java.io.File;
 import java.net.URI;
 
 import org.jsoup.Jsoup;
@@ -11,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mycom.webcrawler.util.FileUtil;
-import com.mycom.webcrawler.util.StringUtil;
 
 public class JsoupTest {
 	private Logger log = LoggerFactory.getLogger(FileUtil.class);

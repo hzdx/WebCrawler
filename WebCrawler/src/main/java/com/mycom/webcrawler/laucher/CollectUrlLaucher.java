@@ -10,20 +10,17 @@ public class CollectUrlLaucher {
 
 	public static void main(String[] args) throws Exception {
 		String entryUrl = "http://shanghai.anjuke.com/sale/";
-		//String usefulUrl = entryUrl + "p";
 		String targetUrlPrefix = "http://shanghai.anjuke.com/prop/view/";
 		String html = SimpleHttpClientHolder.fetchUrl(entryUrl);
 
-		// 初始化JsoupUtil,urlHolder组件
+		// 初始化jsoupParser,urlHolder组件
 		JsoupParser jsoupParser = new JsoupParser();
 		UrlHolder urlHolder = new UrlHolder();// 存放要解析的url
-//		urlHolder.setPrefix(usefulUrl);
-//		urlHolder.setCrossDomain(false);
 		urlHolder.addUrl(entryUrl);
 		urlHolder.markUrl(entryUrl);
+
 		jsoupParser.setUrlHolder(urlHolder);
 		jsoupParser.setPrefixUrl(entryUrl);
-		//jsoupParser.setFilter(new UriFilter());
 		jsoupParser.setHtmlHandler(new LinkHandler(targetUrlPrefix));
 		// 处理链接
 

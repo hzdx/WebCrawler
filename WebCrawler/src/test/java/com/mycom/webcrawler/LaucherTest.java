@@ -15,6 +15,15 @@ import com.mycom.webcrawler.persistence.CommonDao;
 public class LaucherTest {
 
 	@Test
+	public void testBreak(){
+		int i = 0;
+		while(true){
+			System.out.println(i++);
+			if(i > 10) break;//0-10
+		}
+	}
+	
+	@Test
 	public void testStartWith() {
 		String s = "/abc/p1cd";
 		boolean ok = s.startsWith("/abc/p[0-9]+");
@@ -31,7 +40,7 @@ public class LaucherTest {
 	
 	@Test
 	public void testParse() throws Exception{
-		String url = "http://shanghai.anjuke.com/prop/view/A478605424";
+		String url = "http://shanghai.anjuke.com/prop/view/A483863319";
 		String html = SimpleHttpClientHolder.fetchUrl(url);
 		Document doc = Jsoup.parse(html,"UTF-8");
 //		Document doc = Jsoup.parse(HttpClientTest.doget(url));

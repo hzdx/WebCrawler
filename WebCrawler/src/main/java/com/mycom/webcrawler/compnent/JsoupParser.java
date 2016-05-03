@@ -23,7 +23,7 @@ public class JsoupParser {
 	 */
 	private HtmlHandler htmlHandler;
 	/**
-	 * 对存放到urlHolder的url的要求前缀
+	 * 对存放到urlHolder的url的要求前缀,控制不跨域
 	 */
 	private String prefixUrl;
 
@@ -32,11 +32,11 @@ public class JsoupParser {
 		if (url != null) {
 			log.debug("-----------------------------------------------");
 			log.debug("jsoup get orgin url :{}", url);
-			// 不访问跨域的链接:对跨域的选项 由urlHolder控制
+
 			String finalUrl = StringUtil.resolveUrl(url, baseUrl);
 			if (htmlHandler != null && htmlHandler instanceof LinkHandler) {
 				((LinkHandler) htmlHandler).saveWantedUrl(finalUrl);
-			}//实际对页面的处理
+			} // 实际对页面的处理
 			if (prefixUrl != null) {
 				if (finalUrl.startsWith(prefixUrl))
 					urlHolder.addUrl(finalUrl);
