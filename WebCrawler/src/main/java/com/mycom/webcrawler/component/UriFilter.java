@@ -1,4 +1,4 @@
-package com.mycom.webcrawler.compnent;
+package com.mycom.webcrawler.component;
 
 @Deprecated
 public class UriFilter {

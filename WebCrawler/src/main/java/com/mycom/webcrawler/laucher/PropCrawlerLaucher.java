@@ -3,7 +3,7 @@ package com.mycom.webcrawler.laucher;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 
-import com.mycom.webcrawler.compnent.JsoupParser;
+import com.mycom.webcrawler.component.JsoupParser;
 import com.mycom.webcrawler.httpclient.SimpleHttpClientHolder;
 import com.mycom.webcrawler.urlholder.UrlHolder;
 

@@ -1,6 +1,6 @@
 package com.mycom.webcrawler.laucher;
 
-import com.mycom.webcrawler.compnent.JsoupParser;
+import com.mycom.webcrawler.component.JsoupParser;
 import com.mycom.webcrawler.httpclient.HttpClientHolder;
 import com.mycom.webcrawler.model.UrlWrapper;
 import com.mycom.webcrawler.urlholder.UrlHolder;
@@ -10,10 +10,11 @@ public class WebCrawlerLaucher {
 	public static int count = 0;
 
 	public static void main(String[] args) throws Exception {
-		String entryUrl = "https://jsoup.org/";
-		String outputDir = "d:/crawler/jsoup/";
+		String urlPrefix = "http://www.liaoxuefeng.com/wiki/";
+		String entryUrl = "http://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000";
+		String outputDir = "d:/crawler/js/";
 		String html = HttpClientHolder.fetchUrl(entryUrl).getHtml();
-		FileUtil.saveToLocal(html, outputDir, "index.html");
+		FileUtil.saveFile(html, entryUrl.replaceAll(urlPrefix, outputDir), false);
 		count++;
 
 		// 初始化jsoupParser,urlHolder组件
@@ -22,21 +23,21 @@ public class WebCrawlerLaucher {
 		urlHolder.addUrl(entryUrl);
 		urlHolder.markUrl(entryUrl);
 		jsoupParser.setUrlHolder(urlHolder);
-		jsoupParser.setPrefixUrl(entryUrl);
+		jsoupParser.setPrefixUrl(urlPrefix);
 
 		// 开始处理过程
 		jsoupParser.parseHtml(html, entryUrl);
-		loops(jsoupParser, urlHolder, entryUrl, outputDir);
+		loops(jsoupParser, urlHolder, urlPrefix, outputDir);
 		HttpClientHolder.close();
 		System.out.println("total save file num :" + count);
 	}
 
-	public static void loops(JsoupParser jsoupParser, UrlHolder urlHolder, String entryUrl, String outputDir)
+	public static void loops(JsoupParser jsoupParser, UrlHolder urlHolder, String urlPrefix, String outputDir)
 			throws Exception {
 		for (String url : urlHolder.getUncrawlUrl()) {
 			UrlWrapper wrapper = HttpClientHolder.fetchUrl(url);
 			if (wrapper != null) {
-				FileUtil.saveFile(wrapper.getHtml(), wrapper.getUrl().replaceAll(entryUrl, outputDir));
+				FileUtil.saveFile(wrapper.getHtml(), wrapper.getUrl().replaceAll(urlPrefix, outputDir),false);
 				jsoupParser.parseHtml(wrapper.getHtml(), wrapper.getUrl());
 			}
 			count++;
@@ -44,7 +45,7 @@ public class WebCrawlerLaucher {
 		}
 
 		if (!urlHolder.isCompleted())
-			loops(jsoupParser, urlHolder, entryUrl, outputDir);
+			loops(jsoupParser, urlHolder, urlPrefix, outputDir);
 
 	}
 

@@ -1,4 +1,4 @@
-package com.mycom.webcrawler.compnent;
+package com.mycom.webcrawler.component;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;

@@ -15,16 +15,17 @@ public class FileUtil {
 		saveToLocal("aaa", "d:/crawler/maven/download.cgi", "index.html");
 	}
 
-	public static void saveFile(String html, String filePath) throws IOException {
-
-		if (!((filePath.endsWith(".html") || filePath.endsWith(".js") || filePath.endsWith(".css")))) {
-			// 文件夹类型
-			if (filePath.lastIndexOf("/") == filePath.length() - 1) {
-				// 最后一个字符是"/"
-				filePath = filePath + "index.html";
-			} // 最后一个字符不是"/"
-			else
-				filePath = filePath + "/index.html";
+	public static void saveFile(String html, String filePath,boolean addSuffix) throws IOException {
+		if(addSuffix){
+			if (!((filePath.endsWith(".html") || filePath.endsWith(".js") || filePath.endsWith(".css")))) {
+				// 文件夹类型
+				if (filePath.lastIndexOf("/") == filePath.length() - 1) {
+					// 最后一个字符是"/"
+					filePath = filePath + "index.html";
+				} // 最后一个字符不是"/"
+				else
+					filePath = filePath + "/index.html";
+			}
 		}
 		int n = filePath.lastIndexOf("/");
 		String path = filePath.substring(0, n);

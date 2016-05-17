@@ -5,8 +5,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.mycom.webcrawler.compnent.CrawlerRunner;
-import com.mycom.webcrawler.compnent.JsoupParser;
+import com.mycom.webcrawler.component.CrawlerRunner;
+import com.mycom.webcrawler.component.JsoupParser;
 import com.mycom.webcrawler.htmlhandler.LinkHandler;
 import com.mycom.webcrawler.httpclient.HttpClientHolder;
 import com.mycom.webcrawler.httpclient.SimpleHttpClientHolder;
@@ -27,7 +27,7 @@ public class MutiThreadCrawlerLaucher {
 		urlHolder.getUrlSet().add(entryUrl);
 		jsoupParser.setUrlHolder(urlHolder);
 		jsoupParser.setPrefixUrl(entryUrl);
-		jsoupParser.setHtmlHandler(new LinkHandler(targetUrlPrefix));
+		jsoupParser.setPageHandler(new LinkHandler(targetUrlPrefix));
 		// 处理链接
 
 		// 第一次解析

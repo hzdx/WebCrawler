@@ -57,7 +57,7 @@ public class DaoTest {
 
 	public static void main(String[] args) throws Exception {
 		testDb();
-		testInsert();
+		//testInsert();
 	}
 
 }

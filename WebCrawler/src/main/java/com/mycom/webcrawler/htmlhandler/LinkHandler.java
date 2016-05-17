@@ -10,7 +10,7 @@ import com.mycom.webcrawler.persistence.CommonDao;
  * @author l
  *
  */
-public class LinkHandler implements HtmlHandler {
+public class LinkHandler implements PageHandler {
 	private String prefixUrl;
 
 	public LinkHandler(String prefixUrl) {
@@ -34,9 +34,11 @@ public class LinkHandler implements HtmlHandler {
 	}
 
 	@Override
-	public Object process(String html, Document doc) {
+	public void process(String htmlContent, String url, Document pageDoc) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		saveWantedUrl(url);
 	}
+
+
 
 }

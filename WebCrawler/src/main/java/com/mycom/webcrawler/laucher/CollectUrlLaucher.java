@@ -1,6 +1,6 @@
 package com.mycom.webcrawler.laucher;
 
-import com.mycom.webcrawler.compnent.JsoupParser;
+import com.mycom.webcrawler.component.JsoupParser;
 import com.mycom.webcrawler.htmlhandler.LinkHandler;
 import com.mycom.webcrawler.httpclient.HttpClientHolder;
 import com.mycom.webcrawler.httpclient.SimpleHttpClientHolder;
@@ -21,7 +21,7 @@ public class CollectUrlLaucher {
 
 		jsoupParser.setUrlHolder(urlHolder);
 		jsoupParser.setPrefixUrl(entryUrl);
-		jsoupParser.setHtmlHandler(new LinkHandler(targetUrlPrefix));
+		jsoupParser.setPageHandler(new LinkHandler(targetUrlPrefix));
 		// 处理链接
 
 		// 开始处理过程

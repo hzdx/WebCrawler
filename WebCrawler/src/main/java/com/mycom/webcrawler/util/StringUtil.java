@@ -125,9 +125,7 @@ public class StringUtil {
 	}
 
 	public static boolean isBlank(String str) {
-		if (str == null || str.trim().equals(""))
-			return true;
-		return false;
+		return str == null || str.trim().equals("");
 	}
 
 }

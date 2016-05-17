@@ -1,4 +1,4 @@
-package com.mycom.webcrawler.compnent;
+package com.mycom.webcrawler.component;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -7,8 +7,7 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mycom.webcrawler.htmlhandler.HtmlHandler;
-import com.mycom.webcrawler.htmlhandler.LinkHandler;
+import com.mycom.webcrawler.htmlhandler.PageHandler;
 import com.mycom.webcrawler.urlholder.AbstractUrlHolder;
 import com.mycom.webcrawler.util.StringUtil;
 
@@ -21,21 +20,21 @@ public class JsoupParser {
 	/**
 	 * 对html文本进行处理的接口对象
 	 */
-	private HtmlHandler htmlHandler;
+	private PageHandler pageHandler;
 	/**
-	 * 对存放到urlHolder的url的要求前缀,控制不跨域
+	 * 对存放到urlHolder的url的前缀要求
 	 */
 	private String prefixUrl;
 
-	private void processUrl(String url, String baseUrl) throws Exception {
+	private void processUrl(String url, String baseUrl,Document doc) throws Exception {
 		url = StringUtil.cleanUrl(url);
 		if (url != null) {
 			log.debug("-----------------------------------------------");
 			log.debug("jsoup get orgin url :{}", url);
 
 			String finalUrl = StringUtil.resolveUrl(url, baseUrl);
-			if (htmlHandler != null && htmlHandler instanceof LinkHandler) {
-				((LinkHandler) htmlHandler).saveWantedUrl(finalUrl);
+			if (pageHandler != null ) {
+				pageHandler.process(null, finalUrl, doc);
 			} // 实际对页面的处理
 			if (prefixUrl != null) {
 				if (finalUrl.startsWith(prefixUrl))
@@ -50,7 +49,7 @@ public class JsoupParser {
 			String url = link.attr("href").trim();
 			if (url.equals("") || url.equals("#") || url.equals("/"))
 				continue;// 过滤掉 #,/等链接
-			processUrl(url, baseUrl);
+			processUrl(url, baseUrl,doc);
 		}
 	}
 
@@ -75,8 +74,8 @@ public class JsoupParser {
 		this.prefixUrl = prefixUrl;
 	}
 
-	public void setHtmlHandler(HtmlHandler htmlHandler) {
-		this.htmlHandler = htmlHandler;
+	public void setPageHandler(PageHandler pageHandler) {
+		this.pageHandler = pageHandler;
 	}
 
 	public void setUrlHolder(AbstractUrlHolder urlHolder) {
@@ -93,7 +92,7 @@ public class JsoupParser {
 	private void processMedia(Document doc, String baseUrl) throws Exception {
 		Elements media = doc.select("[src]");
 		for (Element src : media) {
-			processUrl(src.attr("src"), baseUrl);
+			processUrl(src.attr("src"), baseUrl,doc);
 
 		}
 	}
@@ -108,7 +107,7 @@ public class JsoupParser {
 	private void processImport(Document doc, String baseUrl) throws Exception {
 		Elements imports = doc.select("link[href]");
 		for (Element link : imports) {
-			processUrl(link.attr("href"), baseUrl);
+			processUrl(link.attr("href"), baseUrl,doc);
 		}
 	}
 

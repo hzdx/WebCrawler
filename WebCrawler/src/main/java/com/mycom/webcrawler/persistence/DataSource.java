@@ -13,34 +13,37 @@ public class DataSource {
 		if (dataSource != null)
 			dataSource.close();
 	}
+	
+	// 初始化dataSource
+	private synchronized static void  initDataSource() throws Exception{
+		if (dataSource == null) {
+			dataSource = new BasicDataSource();
+			InputStream is = DataSource.class.getClassLoader().getResourceAsStream("jdbc.properties");
+			Properties prop = new Properties();
+			prop.load(is);
+			String driverName = prop.getProperty("jdbc.driverName");
+			String url = prop.getProperty("jdbc.url");
+			String user = prop.getProperty("jdbc.user");
+			String password = prop.getProperty("jdbc.password");
+
+			dataSource.setDriverClassName(driverName);
+			dataSource.setUrl(url);
+			dataSource.setUsername(user);
+			dataSource.setPassword(password);
+
+			dataSource.setInitialSize(5); // 初始的连接数；
+			dataSource.setMaxTotal(10);
+			dataSource.setMinIdle(5);
+			dataSource.setMaxIdle(10);
+			dataSource.setMaxWaitMillis(30 * 1000);
+		}
+		
+	}
 
 	public static BasicDataSource getInstance() throws Exception {
-		if (dataSource == null) {// 初始化dataSource
-			synchronized (DataSource.class) {
-				if (dataSource == null) {
-					dataSource = new BasicDataSource();
-					InputStream is = DataSource.class.getClassLoader().getResourceAsStream("jdbc.properties");
-					Properties prop = new Properties();
-					prop.load(is);
-					String driverName = prop.getProperty("jdbc.driverName");
-					String url = prop.getProperty("jdbc.url");
-					String user = prop.getProperty("jdbc.user");
-					String password = prop.getProperty("jdbc.password");
-
-					dataSource.setDriverClassName(driverName);
-					dataSource.setUrl(url);
-					dataSource.setUsername(user);
-					dataSource.setPassword(password);
-
-					dataSource.setInitialSize(5); // 初始的连接数；
-					dataSource.setMaxTotal(10);
-					dataSource.setMinIdle(5);
-					dataSource.setMaxIdle(10);
-					dataSource.setMaxWaitMillis(30 * 1000);
-				}
-			}
+		if (dataSource == null) {
+			initDataSource();
 		}
-
 		return dataSource;
 	}
 

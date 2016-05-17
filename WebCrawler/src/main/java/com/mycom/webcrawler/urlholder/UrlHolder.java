@@ -16,7 +16,7 @@ public class UrlHolder extends AbstractUrlHolder {
 		if (urlMap.keySet().contains(url))
 			return;
 		log.info("urlHolder put :{}", url);
-		urlMap.put(url, true);// 还未必解析为ture
+		urlMap.put(url, true);// 还未必解析为true
 	}
 
 	@Deprecated
