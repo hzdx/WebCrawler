@@ -3,8 +3,8 @@ package com.mycom.webcrawler.laucher;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 
-import com.mycom.webcrawler.component.JsoupParser;
-import com.mycom.webcrawler.httpclient.SimpleHttpClientHolder;
+import com.mycom.webcrawler.httpclient.HttpClientWrapper;
+import com.mycom.webcrawler.parser.JsoupParser;
 import com.mycom.webcrawler.urlholder.UrlHolder;
 
 public class PropCrawlerLaucher {
@@ -14,7 +14,7 @@ public class PropCrawlerLaucher {
 	public static void main(String[] args) throws Exception {
 		String entryUrl = "http://shanghai.anjuke.com/sale/";
 		String outputDir = "d:/crawler/jsoup/";
-		String html = SimpleHttpClientHolder.fetchUrl(entryUrl);
+		String html = HttpClientWrapper.fetchUrl(entryUrl);
 		count++;
 
 		bw = new BufferedWriter(new FileWriter("prop.txt"));
@@ -27,7 +27,7 @@ public class PropCrawlerLaucher {
 		// 开始处理过程
 		jsoupParser.parseHtml(html, entryUrl);
 		loops(jsoupParser, urlHolder, entryUrl);
-		SimpleHttpClientHolder.close();
+		HttpClientWrapper.close();
 		bw.flush();
 		bw.close();
 		System.out.println("total save file num :" + count);
@@ -36,7 +36,7 @@ public class PropCrawlerLaucher {
 	public static void loops(JsoupParser jsoupParser, UrlHolder urlHolder, String entryUrl)
 			throws Exception {
 		for (String url : urlHolder.getUncrawlUrl()) {
-			String html = SimpleHttpClientHolder.fetchUrl(url);
+			String html = HttpClientWrapper.fetchUrl(url);
 			if (html != null) {
 				jsoupParser.parseHtml(html, url);
 				bw.write(url);

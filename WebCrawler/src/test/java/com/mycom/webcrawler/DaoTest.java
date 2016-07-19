@@ -32,7 +32,7 @@ public class DaoTest {
 			}
 		};
 
-		Connection conn = DataSource.getInstance().getConnection();
+		Connection conn = DataSource.get().getConnection();
 
 		QueryRunner run = new QueryRunner();
 
@@ -50,7 +50,7 @@ public class DaoTest {
 	}
 
 	public static void testInsert() throws Exception {
-		QueryRunner run = new QueryRunner(DataSource.getInstance());
+		QueryRunner run = new QueryRunner(DataSource.get());
 		int inserts = run.update("INSERT INTO aaa (aa,id) VALUES (?,?)", "ddd Doe", 2);
 		
 	}

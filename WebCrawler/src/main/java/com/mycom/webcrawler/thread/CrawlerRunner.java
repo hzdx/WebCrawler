@@ -1,4 +1,4 @@
-package com.mycom.webcrawler.component;
+package com.mycom.webcrawler.thread;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -6,7 +6,8 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mycom.webcrawler.httpclient.SimpleHttpClientHolder;
+import com.mycom.webcrawler.httpclient.HttpClientWrapper;
+import com.mycom.webcrawler.parser.JsoupParser;
 
 public class CrawlerRunner implements Runnable {
 	private Logger log = LoggerFactory.getLogger(CrawlerRunner.class);
@@ -19,7 +20,7 @@ public class CrawlerRunner implements Runnable {
 			try {
 				String url = urlQueue.poll(10, TimeUnit.SECONDS);
 				if (url != null) {
-					String html = SimpleHttpClientHolder.fetchUrl(url);
+					String html = HttpClientWrapper.fetchUrl(url);
 					parser.parseHtmlOnlyLink(html, url);
 				} else
 					break;

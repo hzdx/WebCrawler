@@ -8,8 +8,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
-import com.mycom.webcrawler.httpclient.SimpleHttpClientHolder;
-import com.mycom.webcrawler.model.AnjukeProp;
+import com.mycom.webcrawler.httpclient.HttpClientWrapper;
+import com.mycom.webcrawler.model.Property;
 import com.mycom.webcrawler.persistence.CommonDao;
 
 public class LaucherTest {
@@ -41,7 +41,7 @@ public class LaucherTest {
 	@Test
 	public void testParse() throws Exception{
 		String url = "http://shanghai.anjuke.com/prop/view/A483863319";
-		String html = SimpleHttpClientHolder.fetchUrl(url);
+		String html = HttpClientWrapper.fetchUrl(url);
 		Document doc = Jsoup.parse(html,"UTF-8");
 //		Document doc = Jsoup.parse(HttpClientTest.doget(url));
 //		//Document doc = Jsoup.connect("http://shanghai.anjuke.com/prop/view/A482253954").get();
@@ -57,7 +57,7 @@ public class LaucherTest {
 			prop.setProperty(field, value);
 		}
 		
-		AnjukeProp anjukeProp = new AnjukeProp(prop);
+		Property anjukeProp = new Property(prop);
 		String sql = "insert into prop_info(id,title,salePrice,downPay"
 				+ ",unitPrice,community,position,roomNum"
 				+ ",hallNum,toiletNum,acreage,orientation"

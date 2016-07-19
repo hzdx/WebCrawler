@@ -22,21 +22,27 @@ import org.slf4j.LoggerFactory;
 
 import com.mycom.webcrawler.model.UrlWrapper;
 
-public class HttpClientHolder {
-	private static Logger log = LoggerFactory.getLogger(HttpClientHolder.class);
+public class CustomHttpClientWrapper {
+	private static Logger log = LoggerFactory.getLogger(CustomHttpClientWrapper.class);
 
-	private static RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(10 * 1000)
-			.setConnectionRequestTimeout(10 * 1000).setConnectTimeout(10 * 1000).build();
+	private static RequestConfig requestConfig = RequestConfig.custom()//
+			.setSocketTimeout(10 * 1000)//
+			.setConnectionRequestTimeout(10 * 1000)//
+			.setConnectTimeout(10 * 1000).build();
+
 	private static HttpRequestRetryHandler retryHandler = new WebCrawlerRetryHandler();
-	private static CloseableHttpClient httpClient = HttpClients.custom()// 自定义
-			.setDefaultRequestConfig(requestConfig).setRetryHandler(retryHandler)
+
+	private static CloseableHttpClient httpClient = HttpClients.custom()//
+			.setDefaultRequestConfig(requestConfig)//
+			.setRetryHandler(retryHandler)//
 			.setUserAgent("Mozilla/5.0 Chrome/50.0.2661.75").build();//
+
 	private static HttpClientContext context = HttpClientContext.create();
 
 	// todo 文件类型，视频，音频类型的获取
-	public static UrlWrapper fetchUrl(String url0) throws Exception {
-		HttpGet httpget = new HttpGet(url0);
-		log.info("httpClient fetching :" + url0);
+	public static UrlWrapper fetchUrl(String url) throws Exception {
+		HttpGet httpget = new HttpGet(url);
+		log.info("httpClient fetching :" + url);
 		CloseableHttpResponse response = httpClient.execute(httpget, context);
 		try {
 			HttpEntity entity = response.getEntity();
@@ -51,17 +57,17 @@ public class HttpClientHolder {
 				List<URI> redirectLocations = context.getRedirectLocations();
 				URI location = URIUtils.resolve(httpget.getURI(), target, redirectLocations);
 				String finalUrl = location.toASCIIString();
-				if (!(url0).equals(finalUrl)) {
+				if (!(url).equals(finalUrl)) {
 					log.info("final http location: {}", finalUrl);
 					wrapper.setUrl(finalUrl);
 				} else {
-					wrapper.setUrl(url0);
+					wrapper.setUrl(url);
 				}
 				String content = EntityUtils.toString(entity);
 				wrapper.setHtml(content);
 				return wrapper;
 			} else {
-				log.error("url: {} ,status: {} ", url0, status);
+				log.error("url: {} ,status: {} ", url, status);
 				return null;
 			}
 		} finally {

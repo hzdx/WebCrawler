@@ -15,19 +15,24 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SimpleHttpClientHolder {
-	private static Logger log = LoggerFactory.getLogger(SimpleHttpClientHolder.class);
+public class HttpClientWrapper {
+	private static Logger log = LoggerFactory.getLogger(HttpClientWrapper.class);
 
-	private static RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(10 * 1000)
-			.setConnectionRequestTimeout(10 * 1000).setConnectTimeout(10 * 1000).build();
+	private static RequestConfig requestConfig = RequestConfig.custom()//
+			.setSocketTimeout(10 * 1000)//
+			.setConnectionRequestTimeout(10 * 1000)//
+			.setConnectTimeout(10 * 1000).build();
+
 	private static HttpRequestRetryHandler retryHandler = new WebCrawlerRetryHandler();
-	private static CloseableHttpClient httpClient = HttpClients.custom()// 自定义
-			.setDefaultRequestConfig(requestConfig).setRetryHandler(retryHandler)
-			.setUserAgent("Mozilla/5.0 Chrome/50.0.2661.75").build();//
 
-	public static String fetchUrl(String url0) throws Exception {
-		HttpGet httpget = new HttpGet(url0);
-		log.info("httpClient fetching :" + url0);
+	private static CloseableHttpClient httpClient = HttpClients.custom()//
+			.setDefaultRequestConfig(requestConfig)//
+			.setRetryHandler(retryHandler)//
+			.setUserAgent("Mozilla/5.0 Chrome/50.0.2661.75").build();
+
+	public static String fetchUrl(String url) throws Exception {
+		HttpGet httpget = new HttpGet(url);
+		log.info("httpClient fetching :" + url);
 		CloseableHttpResponse response = httpClient.execute(httpget);
 		try {
 			HttpEntity entity = response.getEntity();
@@ -35,11 +40,10 @@ public class SimpleHttpClientHolder {
 			log.info("status :{}", status);
 
 			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK && entity != null) {
-
 				String content = EntityUtils.toString(entity);
 				return content;
 			} else {
-				log.error("url: {} ,status: {} ", url0, status);
+				log.error("url: {} ,status: {} ", url, status);
 				return null;
 			}
 		} finally {

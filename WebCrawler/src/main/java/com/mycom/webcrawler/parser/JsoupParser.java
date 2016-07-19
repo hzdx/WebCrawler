@@ -1,4 +1,4 @@
-package com.mycom.webcrawler.component;
+package com.mycom.webcrawler.parser;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -2,12 +2,9 @@ package com.mycom.webcrawler.model;
 
 import java.util.Properties;
 
-/**
- * 安居客房源对象
- */
-public class AnjukeProp {
+public class Property {
 
-	public AnjukeProp() {
+	public Property() {
 	}
 
 	private String splitText0(String text, String flag1, String flag2) {
@@ -50,7 +47,7 @@ public class AnjukeProp {
 		return -1;
 	}
 
-	public AnjukeProp(Properties prop) {
+	public Property(Properties prop) {
 		this.id = prop.getProperty("id");
 		this.title = prop.getProperty("title");
 		this.salePrice = parseText(prop.getProperty("售价"), "万");

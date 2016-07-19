@@ -2,18 +2,17 @@ package com.mycom.webcrawler.htmlhandler;
 
 import org.jsoup.nodes.Document;
 
-import com.mycom.webcrawler.persistence.CommonDao;
+import com.mycom.webcrawler.persistence.PropertyService;
 
 /**
  * 处理链接的handler
  * 
- * @author l
  *
  */
-public class LinkHandler implements PageHandler {
+public class SavePropertyUrlHandler implements PageHandler {
 	private String prefixUrl;
 
-	public LinkHandler(String prefixUrl) {
+	public SavePropertyUrlHandler(String prefixUrl) {
 		this.prefixUrl = prefixUrl;
 	}
 
@@ -25,20 +24,11 @@ public class LinkHandler implements PageHandler {
 		this.prefixUrl = prefixUrl;
 	}
 
-	public void saveWantedUrl(String url) throws Exception {
-		if (url.startsWith(prefixUrl)) {
-			String sql = "insert into prop_url(url) values (?)";
-			CommonDao.insert(sql, url);
-		}
-
-	}
-
 	@Override
 	public void process(String htmlContent, String url, Document pageDoc) throws Exception {
-		// TODO Auto-generated method stub
-		saveWantedUrl(url);
+		if (url.startsWith(prefixUrl)) {
+			PropertyService.saveUrl(url);
+		}
 	}
-
-
 
 }

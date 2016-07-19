@@ -13,13 +13,13 @@ public class CommonDao {
 	public static void insert(String sql, Object... args) throws Exception {
 		Connection conn = null;
 		try {
-			conn = DataSource.getInstance().getConnection();
+			conn = DataSource.getConnection();
 			QueryRunner run = new QueryRunner();
 			if (args == null) {
 				run.update(conn, sql);
 			} else
 				run.update(conn, sql, args);
-			log.info("execute sql success :{}", sql);
+			log.info("execute sql completed! :{}", sql);
 		} catch (Exception e) {
 			log.error("exception during execute sql :{}", e.getMessage());
 			throw e;
@@ -36,7 +36,7 @@ public class CommonDao {
 	public static void batchInsert(String sql, Object[][] args) throws Exception {
 		Connection conn = null;
 		try {
-			conn = DataSource.getInstance().getConnection();
+			conn = DataSource.getConnection();
 			conn.setAutoCommit(false);
 			QueryRunner run = new QueryRunner();
 			run.batch(conn, sql, args);
@@ -54,7 +54,7 @@ public class CommonDao {
 	public static List<Object[]> select(String sql) throws Exception {
 		Connection conn = null;
 		try {
-			conn = DataSource.getInstance().getConnection();
+			conn = DataSource.getConnection();
 			QueryRunner run = new QueryRunner();
 			List<Object[]> result = run.query(conn, sql, //
 					new CommonResultSetHandler());

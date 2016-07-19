@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,12 +13,15 @@ import org.slf4j.LoggerFactory;
 public class FileUtil {
 	private static Logger log = LoggerFactory.getLogger(FileUtil.class);
 
+	private static String connector = "_";
+
 	public static void main(String[] args) throws Exception {
 		saveToLocal("aaa", "d:/crawler/maven/download.cgi", "index.html");
 	}
 
-	public static void saveFile(String html, String filePath,boolean addSuffix) throws IOException {
-		if(addSuffix){
+	@Deprecated
+	public static void saveFile(String html, String filePath, boolean addSuffix) throws IOException {
+		if (addSuffix) {
 			if (!((filePath.endsWith(".html") || filePath.endsWith(".js") || filePath.endsWith(".css")))) {
 				// 文件夹类型
 				if (filePath.lastIndexOf("/") == filePath.length() - 1) {
@@ -33,27 +38,66 @@ public class FileUtil {
 		saveToLocal(html, path, fileName);
 	}
 
-	// todo 当path已经存在，并且是一个文件，不是文件夹，这样保存会报错,这里文件和文件夹重名，无法创建文件夹
-	public static void saveToLocal(String html, String path, String fileName) throws IOException {
+	public static void saveToLocal(String html, String path, String fileNameHead, String extension) throws IOException {
 		try {
 			File file = new File(path);
-			if (!file.exists())
+			String fullFileName = null;
+			if (!file.exists()) {
 				file.mkdirs();
-			if (file.exists() && file.isFile())
-				file.mkdir();
-			// 如果file已经存在，并且是文件，创建同名文件夹。
-			file = new File(path, fileName);
-			// if(fileName.contains("=")) return;
+				fullFileName = fileNameHead + "." + extension;
+			} else
+				fullFileName = detectFileName(file, fileNameHead, extension);
+
+			// 如果file已经存在，并且是文件，不能创建同名文件夹。
+			file = new File(path, fullFileName);
 			if (!file.exists()) {
 				file.createNewFile();
 				BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 				bw.write(html);
 				bw.flush();
 				bw.close();
-			}
-			log.info(path + "/" + fileName + " is saved ...");
+				log.info(path + "/" + fullFileName + " is saved ...");
+			} else
+				log.info(path + "/" + fullFileName + " already exists ...");
 		} catch (Exception e) {
-			log.error("save file failed! path :{},fileName :{}", path, fileName);
+			log.error("save file failed! path :{},fileName :{}", path, fileNameHead, e.getMessage());
 		}
+	}
+
+	public static String detectFileName(File directory, String fileNameHead, String extension) throws IOException {
+		String[] allFileInDir = directory.list();
+		if (allFileInDir == null)
+			throw new IOException("can't list file in :" + directory.getAbsolutePath());
+
+		List<String> fileNameList = Arrays.asList(allFileInDir);
+		String firstFile = fileNameHead + "." + extension;
+		if (!fileNameList.contains(firstFile)) // 判断是否包含同名文件
+			return firstFile;
+
+		int maxFileNameIdx = 0;
+		for (String fileName : fileNameList) {
+			if (fileName.startsWith(fileNameHead)) {
+				if (fileName.equals(firstFile)) {
+					continue;
+				}
+				int underlineIdx = fileName.lastIndexOf(connector);
+				int dotIdx = fileName.lastIndexOf(".");
+				String indexStr = fileName.substring(underlineIdx + 1, dotIdx);
+				int index = Integer.parseInt(indexStr);
+				if (index > maxFileNameIdx)
+					maxFileNameIdx = index;
+			}
+		}
+		int currentIdx = maxFileNameIdx + 1;
+		String currentFileName = fileNameHead + connector + currentIdx + "." + extension;
+		return currentFileName;
+
+	}
+
+	public static void saveToLocal(String html, String path, String fileName) throws IOException {
+		int dotIdx = fileName.lastIndexOf(".");
+		String fileNameHead = fileName.substring(0, dotIdx);
+		String extension = fileName.substring(dotIdx + 1);
+		saveToLocal(html, path, fileNameHead, extension);
 	}
 }
