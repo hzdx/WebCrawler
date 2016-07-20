@@ -1,12 +1,23 @@
 package com.mycom.webcrawler.util;
 
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class StringUtil {
 	private static Logger log = LoggerFactory.getLogger(StringUtil.class);
+	
+	public static boolean isBlank(String str) {
+		return str == null || str.trim().equals("");
+	}
+	
+	public static String getMainUrl(String url) throws MalformedURLException{
+		URL url0 = new URL(url);
+		return url.replace(url0.getPath(), "/");		
+	}
 
 	/**
 	 * 整理url,去掉空格和特殊符号
@@ -15,6 +26,8 @@ public class StringUtil {
 	 * @return
 	 */
 	public static String cleanUrl(String uri) {
+		if (uri.equals("") || uri.equals("#") || uri.equals("/"))
+			return null;// 过滤掉 #,/等链接
 		uri = uri.replace("[", "").replace("\"", "").replace("\\", "/");
 		if (uri.contains("?")) {
 			int index = uri.indexOf("?");
@@ -124,8 +137,6 @@ public class StringUtil {
 		return expectUrl;
 	}
 
-	public static boolean isBlank(String str) {
-		return str == null || str.trim().equals("");
-	}
+	
 
 }

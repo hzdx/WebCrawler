@@ -1,4 +1,4 @@
-package com.mycom.webcrawler.infoextractor;
+package com.mycom.webcrawler.extractor;
 
 import java.util.Properties;
 
@@ -9,7 +9,7 @@ import org.jsoup.select.Elements;
 
 import com.mycom.webcrawler.model.Property;
 
-public class PropertyExtractor implements InfoExtractor<Property> {
+public class PropertyExtractor implements Extractor<Property> {
 
 	@Override
 	public Property extract(String url, String htmlContent) {

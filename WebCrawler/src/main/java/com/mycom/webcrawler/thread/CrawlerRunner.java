@@ -21,7 +21,7 @@ public class CrawlerRunner implements Runnable {
 				String url = urlQueue.poll(10, TimeUnit.SECONDS);
 				if (url != null) {
 					String html = HttpClientWrapper.fetchUrl(url);
-					parser.parseHtmlOnlyLink(html, url);
+					parser.parseHtml(html, url);
 				} else
 					break;
 			} catch (Exception e) {

@@ -13,10 +13,12 @@ import org.slf4j.LoggerFactory;
 public class FileUtil {
 	private static Logger log = LoggerFactory.getLogger(FileUtil.class);
 
-	private static String connector = "_";
+	private static String CONNECTOR = "_";
+	private static String HTML_EXT = "html";
+	public static char[] specialChars = {'/','\\','<','>','|','?',':','*','"'};
 
 	public static void main(String[] args) throws Exception {
-		saveToLocal("aaa", "d:/crawler/maven/download.cgi", "index.html");
+		saveFullName("aaa", "d:/crawler/maven/download.cgi", "index.html");
 	}
 
 	@Deprecated
@@ -35,9 +37,12 @@ public class FileUtil {
 		int n = filePath.lastIndexOf("/");
 		String path = filePath.substring(0, n);
 		String fileName = filePath.substring(n + 1, filePath.length());
-		saveToLocal(html, path, fileName);
+		saveFullName(html, path, fileName);
 	}
 
+	public static void saveToLocal(String html, String path, String fileNameHead) throws IOException{
+		saveToLocal(html,path,fileNameHead.replaceAll("/", "&"),HTML_EXT);
+	}
 	public static void saveToLocal(String html, String path, String fileNameHead, String extension) throws IOException {
 		try {
 			File file = new File(path);
@@ -64,6 +69,7 @@ public class FileUtil {
 		}
 	}
 
+	//如果index.txt文件已经存在，则生成index_1.txt文件，避免创建重名文件
 	public static String detectFileName(File directory, String fileNameHead, String extension) throws IOException {
 		String[] allFileInDir = directory.list();
 		if (allFileInDir == null)
@@ -80,7 +86,7 @@ public class FileUtil {
 				if (fileName.equals(firstFile)) {
 					continue;
 				}
-				int underlineIdx = fileName.lastIndexOf(connector);
+				int underlineIdx = fileName.lastIndexOf(CONNECTOR);
 				int dotIdx = fileName.lastIndexOf(".");
 				String indexStr = fileName.substring(underlineIdx + 1, dotIdx);
 				int index = Integer.parseInt(indexStr);
@@ -89,12 +95,11 @@ public class FileUtil {
 			}
 		}
 		int currentIdx = maxFileNameIdx + 1;
-		String currentFileName = fileNameHead + connector + currentIdx + "." + extension;
-		return currentFileName;
+		return fileNameHead + CONNECTOR + currentIdx + "." + extension;
 
 	}
 
-	public static void saveToLocal(String html, String path, String fileName) throws IOException {
+	public static void saveFullName(String html, String path, String fileName) throws IOException {
 		int dotIdx = fileName.lastIndexOf(".");
 		String fileNameHead = fileName.substring(0, dotIdx);
 		String extension = fileName.substring(dotIdx + 1);

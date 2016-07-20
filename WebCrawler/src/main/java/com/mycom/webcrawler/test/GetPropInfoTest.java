@@ -1,21 +1,15 @@
-package com.mycom.webcrawler.laucher;
+package com.mycom.webcrawler.test;
 
 import java.util.List;
-import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
+import com.mycom.webcrawler.extractor.PropertyExtractor;
 import com.mycom.webcrawler.httpclient.HttpClientWrapper;
-import com.mycom.webcrawler.infoextractor.PropertyExtractor;
 import com.mycom.webcrawler.model.Property;
 import com.mycom.webcrawler.persistence.PropertyService;
 
-public class GetPropInfoLaucher {
+public class GetPropInfoTest {
 	// 根据获得的url，收集房源信息。问题：多次请求后，需要输入图片验证码才能访问网页.
 	public static void main(String[] args) throws Exception {
 		List<String> urlStrList = PropertyService.selectAllUrl();

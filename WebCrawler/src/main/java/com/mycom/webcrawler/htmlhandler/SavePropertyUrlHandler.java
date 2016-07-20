@@ -5,9 +5,8 @@ import org.jsoup.nodes.Document;
 import com.mycom.webcrawler.persistence.PropertyService;
 
 /**
- * 处理链接的handler
+ * 保存从页面解析到的房屋信息url的handler
  * 
- *
  */
 public class SavePropertyUrlHandler implements PageHandler {
 	private String prefixUrl;

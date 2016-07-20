@@ -3,17 +3,25 @@ package com.mycom.webcrawler.urlholder;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ConcurrentUrlHolder extends AbstractUrlHolder {
 	private BlockingQueue<String> urlQueue;
 	private Set<String> urlSet = new HashSet<>();
+	private Lock lock = new ReentrantLock();
 
-	public synchronized void addUrl(String url) {
-		if (urlSet.contains(url))
-			return;
-		else {
-			urlQueue.add(url);
-			urlSet.add(url);
+	public void addUrl(String url) {
+		lock.lock();
+		try {
+			if (urlSet.contains(url))
+				return;
+			else {
+				urlQueue.add(url);
+				urlSet.add(url);
+			}
+		} finally{
+			lock.unlock();
 		}
 	}
 

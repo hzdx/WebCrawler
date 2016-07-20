@@ -1,11 +1,11 @@
-package com.mycom.webcrawler.laucher;
+package com.mycom.webcrawler.test;
 
 import com.mycom.webcrawler.htmlhandler.SavePropertyUrlHandler;
 import com.mycom.webcrawler.httpclient.HttpClientWrapper;
 import com.mycom.webcrawler.parser.JsoupParser;
 import com.mycom.webcrawler.urlholder.UrlHolder;
 
-public class CollectUrlLaucher {
+public class CollectUrlTest {
 
 	public static void main(String[] args) throws Exception {
 		String entryUrl = "http://shanghai.anjuke.com/sale/";
@@ -19,8 +19,8 @@ public class CollectUrlLaucher {
 		urlHolder.markUrl(entryUrl);
 
 		jsoupParser.setUrlHolder(urlHolder);
-		jsoupParser.setPrefixUrl(entryUrl);
-		jsoupParser.setPageHandler(new SavePropertyUrlHandler(targetUrlPrefix));
+		//jsoupParser.setPrefixUrl(entryUrl);
+		jsoupParser.addPageHandler(new SavePropertyUrlHandler(targetUrlPrefix));
 		// 处理链接
 
 		// 开始处理过程
@@ -37,7 +37,7 @@ public class CollectUrlLaucher {
 			}
 			urlHolder.markUrl(url);
 		}
-		
+
 		if (!urlHolder.isCompleted())
 			loops(jsoupParser, urlHolder);
 

@@ -1,6 +1,6 @@
-package com.mycom.webcrawler.infoextractor;
+package com.mycom.webcrawler.extractor;
 
-public interface InfoExtractor<T> {
+public interface Extractor<T> {
 	
 	/**
 	 * define how to get useful information from html page.

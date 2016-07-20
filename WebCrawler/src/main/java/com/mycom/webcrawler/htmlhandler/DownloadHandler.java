@@ -1,12 +1,21 @@
 package com.mycom.webcrawler.htmlhandler;
 
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mycom.webcrawler.util.FileUtil;
 
 public class DownloadHandler implements PageHandler {
+	private Logger log = LoggerFactory.getLogger(DownloadHandler.class);
+	public static String HTML = ".html";
 	private String dir;// output directory
 	private String extension;// filename extension
+
+	public DownloadHandler(String dir) {
+		this.dir = dir;
+		this.extension = HTML;
+	}
 
 	public DownloadHandler(String dir, String extension) {
 		this.dir = dir;
@@ -14,9 +23,14 @@ public class DownloadHandler implements PageHandler {
 	}
 
 	@Override
-	public void process(String htmlContent, String url, Document pageDoc) throws Exception {
-		String title = pageDoc.getElementsByTag("title").first().text();
-		FileUtil.saveToLocal(htmlContent, dir, title + "." + extension);
+	public void process(String htmlContent, String url, Document pageDoc) {
+		try {
+			String title = pageDoc.getElementsByTag("title").first().text();
+			FileUtil.saveToLocal(htmlContent, dir, title);
+			// FileUtil.saveFullName(htmlContent, dir, title , extension);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
 	}
 
 	public String getDir() {
