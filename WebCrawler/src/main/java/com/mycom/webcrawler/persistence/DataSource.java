@@ -10,11 +10,12 @@ import org.apache.commons.dbcp2.BasicDataSource;
 
 public class DataSource {
 	private static BasicDataSource dataSource;
-	private DataSource(){		
+
+	private DataSource() {
 	}
-	
+
 	// 初始化dataSource
-	private synchronized static void  initDataSource() throws IOException{
+	private synchronized static void initDataSource() throws IOException {
 		if (dataSource == null) {
 			dataSource = new BasicDataSource();
 			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("jdbc.properties");
@@ -37,7 +38,7 @@ public class DataSource {
 			dataSource.setMaxIdle(10);
 			dataSource.setMaxWaitMillis(30 * 1000);
 		}
-		
+
 	}
 
 	public static BasicDataSource get() throws Exception {
@@ -46,11 +47,11 @@ public class DataSource {
 		}
 		return dataSource;
 	}
-	
-	public static Connection getConnection() throws Exception{
+
+	public static Connection getConnection() throws Exception {
 		return get().getConnection();
 	}
-	
+
 	public static void close() throws SQLException {
 		if (dataSource != null)
 			dataSource.close();

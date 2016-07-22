@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import com.mycom.webcrawler.util.FileUtil;
 
 public class DownloadHandler implements PageHandler {
-	private Logger log = LoggerFactory.getLogger(DownloadHandler.class);
-	public static String HTML = ".html";
+	private final Logger log = LoggerFactory.getLogger(DownloadHandler.class);
+	public static final String HTML = ".html";
 	private String dir;// output directory
 	private String extension;// filename extension
 

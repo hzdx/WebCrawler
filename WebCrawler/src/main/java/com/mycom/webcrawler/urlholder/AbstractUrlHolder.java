@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 public abstract class AbstractUrlHolder {
 	protected Logger log = LoggerFactory.getLogger(AbstractUrlHolder.class);
-	public void addUrl(String url){}
+
+	public void addUrl(String url) {
+	}
 
 }

@@ -9,21 +9,18 @@ import org.slf4j.LoggerFactory;
 
 public class StringUtil {
 	private static Logger log = LoggerFactory.getLogger(StringUtil.class);
-	
+
 	public static boolean isBlank(String str) {
-		return str == null || str.trim().equals("");
+		return str == null || str.trim().length() == 0;
 	}
-	
-	public static String getMainUrl(String url) throws MalformedURLException{
+
+	public static String getMainUrl(String url) throws MalformedURLException {
 		URL url0 = new URL(url);
-		return url.replace(url0.getPath(), "/");		
+		return url.replace(url0.getPath(), "/");
 	}
 
 	/**
 	 * 整理url,去掉空格和特殊符号
-	 * 
-	 * @param url
-	 * @return
 	 */
 	public static String cleanUrl(String uri) {
 		if (uri.equals("") || uri.equals("#") || uri.equals("/"))
@@ -136,7 +133,5 @@ public class StringUtil {
 		// 3.第二步的结果加上 resultUrl ../后面的内容
 		return expectUrl;
 	}
-
-	
 
 }

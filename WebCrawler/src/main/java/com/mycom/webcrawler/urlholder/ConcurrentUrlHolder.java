@@ -20,7 +20,7 @@ public class ConcurrentUrlHolder extends AbstractUrlHolder {
 				urlQueue.add(url);
 				urlSet.add(url);
 			}
-		} finally{
+		} finally {
 			lock.unlock();
 		}
 	}

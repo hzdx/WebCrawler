@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CommonDao {
-	private static Logger log = LoggerFactory.getLogger(CommonDao.class);
+	private static final Logger log = LoggerFactory.getLogger(CommonDao.class);
 
 	public static void insert(String sql, Object... args) throws Exception {
 		Connection conn = null;

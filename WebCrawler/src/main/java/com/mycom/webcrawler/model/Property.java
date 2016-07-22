@@ -7,7 +7,7 @@ public class Property {
 	public Property() {
 	}
 
-	private String splitText0(String text, String flag1, String flag2) {
+	private String _splitText(String text, String flag1, String flag2) {
 		try {
 			int startIndex = flag1 == null ? 0 : text.indexOf(flag1) + 1;
 			int endIndex = flag2 == null ? text.length() : text.indexOf(flag2);
@@ -17,8 +17,8 @@ public class Property {
 		}
 	}
 
-	private int parseText0(String text, String flag1, String flag2) {
-		String result = splitText0(text, flag1, flag2);
+	private int _parseText(String text, String flag1, String flag2) {
+		String result = _splitText(text, flag1, flag2);
 		if (result != null)
 			try {
 				return Integer.parseInt(result);
@@ -48,28 +48,28 @@ public class Property {
 	}
 
 	public Property(Properties prop) {
-		this.id = prop.getProperty("id");
-		this.title = prop.getProperty("title");
-		this.salePrice = parseText(prop.getProperty("售价"), "万");
-		this.downPay = parseText(prop.getProperty("参考首付"), "万");
-		this.unitPrice = parseText(prop.getProperty("单价"), "元");
-		this.community = splitText(prop.getProperty("所在小区"), " ");
-		this.position = prop.getProperty("位置");
-		this.roomNum = parseText0(prop.getProperty("房型"), null, "室");
-		this.hallNum = parseText0(prop.getProperty("房型"), "室", "厅");
-		this.toiletNum = parseText0(prop.getProperty("房型"), "厅", "卫");
-		this.acreage = parseText(prop.getProperty("面积"), "平米");
-		this.orientation = prop.getProperty("朝向");
+		id = prop.getProperty("id");
+		title = prop.getProperty("title");
+		salePrice = parseText(prop.getProperty("售价"), "万");
+		downPay = parseText(prop.getProperty("参考首付"), "万");
+		unitPrice = parseText(prop.getProperty("单价"), "元");
+		community = splitText(prop.getProperty("所在小区"), " ");
+		position = prop.getProperty("位置");
+		roomNum = _parseText(prop.getProperty("房型"), null, "室");
+		hallNum = _parseText(prop.getProperty("房型"), "室", "厅");
+		toiletNum = _parseText(prop.getProperty("房型"), "厅", "卫");
+		acreage = parseText(prop.getProperty("面积"), "平米");
+		orientation = prop.getProperty("朝向");
 		try {
-			this.totalFloor = Integer.parseInt(prop.getProperty("楼层").split("/")[1]);
+			totalFloor = Integer.parseInt(prop.getProperty("楼层").split("/")[1]);
 		} catch (Exception e) {
 		} // todo hander exception
 		try {
-			this.floor = Integer.parseInt(prop.getProperty("楼层").split("/")[0]);
+			floor = Integer.parseInt(prop.getProperty("楼层").split("/")[0]);
 		} catch (Exception e) {
 		}
-		this.decoration = prop.getProperty("装修");
-		this.type = prop.getProperty("类型");
+		decoration = prop.getProperty("装修");
+		type = prop.getProperty("类型");
 	}
 
 	private String title;

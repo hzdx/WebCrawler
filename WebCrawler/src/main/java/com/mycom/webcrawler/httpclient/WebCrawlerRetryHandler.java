@@ -7,7 +7,8 @@ import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.protocol.HttpContext;
 
 public class WebCrawlerRetryHandler implements HttpRequestRetryHandler {
-	private int retryTimes = Integer.parseInt(System.getProperty("http.retry", "5"));
+	private final int retryTimes = Integer.parseInt(System.getProperty("http.retry", "5"));
+
 	@Override
 	public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
 		if (executionCount >= retryTimes) {

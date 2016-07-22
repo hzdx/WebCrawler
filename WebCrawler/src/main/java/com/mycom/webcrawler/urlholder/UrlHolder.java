@@ -28,10 +28,6 @@ public class UrlHolder extends AbstractUrlHolder {
 
 	/**
 	 * 去掉url中特殊字符后面的部分 如 # ？
-	 * 
-	 * @param url
-	 * @param ch
-	 * @return
 	 */
 	@Deprecated
 	private String filterUrl(String url, String ch) {

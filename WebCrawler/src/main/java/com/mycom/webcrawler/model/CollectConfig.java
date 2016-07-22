@@ -4,7 +4,7 @@ import java.net.MalformedURLException;
 
 import com.mycom.webcrawler.util.StringUtil;
 
-public class UrlConfig {
+public class CollectConfig {
 	public enum UrlType {
 		LINK, // a[href]
 		MEDIA, // src
@@ -14,24 +14,24 @@ public class UrlConfig {
 	private String entryUrl;// 入口url地址
 	private String prefix;// 抓取url的前缀要求
 	private UrlType[] types;// 抓取url的类型
-	public static UrlType[] defaultType = { UrlType.LINK };
+	public static final UrlType[] DEFAULT_TYPE = { UrlType.LINK };
 
-	public static UrlConfig create(String entryUrl) throws MalformedURLException {
-		return new UrlConfig(entryUrl);
+	public static CollectConfig create(String entryUrl) throws MalformedURLException {
+		return new CollectConfig(entryUrl);
 	}
 
-	public UrlConfig(String entryUrl, String prefix, UrlType[] types) {
+	public CollectConfig(String entryUrl, String prefix, UrlType[] types) {
 		this.entryUrl = entryUrl;
 		this.prefix = prefix;
 		this.types = types;
 	}
 
-	public UrlConfig(String entryUrl, String prefix) {
-		this(entryUrl, prefix, defaultType);
+	public CollectConfig(String entryUrl, String prefix) {
+		this(entryUrl, prefix, DEFAULT_TYPE);
 	}
 
-	public UrlConfig(String entryUrl) throws MalformedURLException {
-		this(entryUrl, StringUtil.getMainUrl(entryUrl), defaultType);
+	public CollectConfig(String entryUrl) throws MalformedURLException {
+		this(entryUrl, StringUtil.getMainUrl(entryUrl), DEFAULT_TYPE);
 	}
 
 	public UrlType[] getTypes() {

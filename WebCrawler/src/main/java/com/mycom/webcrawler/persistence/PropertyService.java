@@ -6,7 +6,7 @@ import java.util.List;
 import com.mycom.webcrawler.model.Property;
 
 public class PropertyService {
-	private static String saveSql = "insert into prop_info(id,title,salePrice,downPay"
+	private static final String saveSql = "insert into prop_info(id,title,salePrice,downPay"
 			+ ",unitPrice,community,position,roomNum" + ",hallNum,toiletNum,acreage,orientation"
 			+ ",totalFloor,floor,decoration,type) " + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 

@@ -1,8 +1,8 @@
 package com.mycom.webcrawler.laucher;
 
 import com.mycom.webcrawler.htmlhandler.DownloadHandler;
-import com.mycom.webcrawler.httpclient.HttpClientWrapper;
-import com.mycom.webcrawler.model.UrlConfig;
+import com.mycom.webcrawler.httpclient.HttpUtil;
+import com.mycom.webcrawler.model.CollectConfig;
 import com.mycom.webcrawler.parser.JsoupParser;
 import com.mycom.webcrawler.urlholder.UrlHolder;
 import com.mycom.webcrawler.util.FileUtil;
@@ -13,7 +13,7 @@ public class WebCrawlerLauncher {
 	private String outputDir;
 
 	public void launch() throws Exception {
-		String html = HttpClientWrapper.fetchUrl(entryUrl);
+		String html = HttpUtil.fetchUrl(entryUrl);
 		FileUtil.saveToLocal(html, outputDir, "主页");
 
 		// 初始化jsoupParser,urlHolder组件
@@ -23,19 +23,19 @@ public class WebCrawlerLauncher {
 		urlHolder.markUrl(entryUrl);
 		jsoupParser.setUrlHolder(urlHolder);
 
-		UrlConfig config = new UrlConfig(entryUrl, urlPrefix);
+		CollectConfig config = new CollectConfig(entryUrl, urlPrefix);
 		jsoupParser.setConfig(config);
 		jsoupParser.addPageHandler(new DownloadHandler(outputDir));
 
 		// 开始处理过程
 		jsoupParser.parseHtml(html, entryUrl);
 		loops(jsoupParser, urlHolder);
-		HttpClientWrapper.close();
+		HttpUtil.close();
 	}
 
 	private void loops(JsoupParser jsoupParser, UrlHolder urlHolder) throws Exception {
 		for (String url : urlHolder.getUncrawlUrl()) {
-			String html = HttpClientWrapper.fetchUrl(url);
+			String html = HttpUtil.fetchUrl(url);
 			if (html != null) {
 				jsoupParser.parseHtml(html, url);
 			}

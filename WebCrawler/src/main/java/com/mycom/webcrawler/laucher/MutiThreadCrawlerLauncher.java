@@ -7,10 +7,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import com.mycom.webcrawler.htmlhandler.DownloadHandler;
-import com.mycom.webcrawler.httpclient.HttpClientWrapper;
-import com.mycom.webcrawler.model.UrlConfig;
+import com.mycom.webcrawler.httpclient.HttpUtil;
+import com.mycom.webcrawler.model.CollectConfig;
 import com.mycom.webcrawler.parser.JsoupParser;
 import com.mycom.webcrawler.thread.CrawlerRunner;
+import com.mycom.webcrawler.thread.NamedThreadFactory;
 import com.mycom.webcrawler.urlholder.ConcurrentUrlHolder;
 import com.mycom.webcrawler.util.FileUtil;
 
@@ -20,7 +21,7 @@ public class MutiThreadCrawlerLauncher {
 	private String outputDir;
 
 	public void launch() throws Exception {
-		String html = HttpClientWrapper.fetchUrl(entryUrl);
+		String html = HttpUtil.fetchUrl(entryUrl);
 		FileUtil.saveToLocal(html, outputDir, "主页");
 
 		BlockingQueue<String> urlQueue = new LinkedBlockingQueue<>();
@@ -31,7 +32,7 @@ public class MutiThreadCrawlerLauncher {
 		urlHolder.getUrlSet().add(entryUrl);
 		jsoupParser.setUrlHolder(urlHolder);
 
-		UrlConfig config = new UrlConfig(entryUrl, urlPrefix);
+		CollectConfig config = new CollectConfig(entryUrl, urlPrefix);
 		jsoupParser.setConfig(config);
 
 		jsoupParser.addPageHandler(new DownloadHandler(outputDir));
@@ -40,9 +41,8 @@ public class MutiThreadCrawlerLauncher {
 		// 第一次解析
 		jsoupParser.parseHtml(html, entryUrl);
 
-		int threadNum = Runtime.getRuntime().availableProcessors() * 2;
-		//System.out.println("thread num:" + threadNum);
-		ExecutorService service = Executors.newFixedThreadPool(threadNum);
+		int threadNum = Runtime.getRuntime().availableProcessors();
+		ExecutorService service = Executors.newFixedThreadPool(threadNum, new NamedThreadFactory("web-crawl-worker-"));
 		for (int i = 0; i < threadNum; i++) {
 			CrawlerRunner runner = new CrawlerRunner();
 			runner.setParser(jsoupParser);
@@ -50,10 +50,10 @@ public class MutiThreadCrawlerLauncher {
 			service.execute(runner);
 		}
 
-		service.shutdown();//主线程不等待
-		service.awaitTermination(Integer.MAX_VALUE,TimeUnit.SECONDS);
-		//以上两个方法一起阻塞等待线程完成
-		HttpClientWrapper.close();
+		service.shutdown();// 主线程不等待
+		service.awaitTermination(Integer.MAX_VALUE, TimeUnit.SECONDS);
+		// 以上两个方法一起阻塞等待线程完成
+		HttpUtil.close();
 
 	}
 

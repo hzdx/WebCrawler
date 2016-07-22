@@ -12,8 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mycom.webcrawler.htmlhandler.PageHandler;
-import com.mycom.webcrawler.model.UrlConfig;
-import com.mycom.webcrawler.model.UrlConfig.UrlType;
+import com.mycom.webcrawler.model.CollectConfig;
+import com.mycom.webcrawler.model.CollectConfig.UrlType;
 import com.mycom.webcrawler.urlholder.AbstractUrlHolder;
 import com.mycom.webcrawler.util.StringUtil;
 
@@ -30,7 +30,7 @@ public class JsoupParser {
 	/**
 	 * url抓取配置
 	 */
-	private UrlConfig config;
+	private CollectConfig config;
 	private boolean handLink;
 	private boolean handImport;
 	private boolean handMedia;
@@ -72,7 +72,7 @@ public class JsoupParser {
 	public void parseHtml(String html, String baseUrl) throws Exception {
 		log.info("**********************************************************");
 		log.info("parse url :{}", baseUrl);
-		
+
 		Document doc = Jsoup.parse(html);
 		for (PageHandler handler : handlerList) {
 			handler.process(html, baseUrl, doc);
@@ -94,7 +94,7 @@ public class JsoupParser {
 		handLink = types.contains(UrlType.LINK);
 	}
 
-	public void setConfig(UrlConfig config) {
+	public void setConfig(CollectConfig config) {
 		this.config = config;
 		decideHandType();
 	}

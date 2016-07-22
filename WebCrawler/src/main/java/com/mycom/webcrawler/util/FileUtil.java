@@ -11,11 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class FileUtil {
-	private static Logger log = LoggerFactory.getLogger(FileUtil.class);
+	private static final Logger log = LoggerFactory.getLogger(FileUtil.class);
 
-	private static String CONNECTOR = "_";
-	private static String HTML_EXT = "html";
-	public static char[] specialChars = {'/','\\','<','>','|','?',':','*','"'};
+	private static final String CONNECTOR = "_";
+	private static final String HTML_EXT = "html";
+	public static final char[] specialChars = { '/', '\\', '<', '>', '|', '?', ':', '*', '"' };
 
 	public static void main(String[] args) throws Exception {
 		saveFullName("aaa", "d:/crawler/maven/download.cgi", "index.html");
@@ -40,9 +40,10 @@ public class FileUtil {
 		saveFullName(html, path, fileName);
 	}
 
-	public static void saveToLocal(String html, String path, String fileNameHead) throws IOException{
-		saveToLocal(html,path,fileNameHead.replaceAll("/", "&"),HTML_EXT);
+	public static void saveToLocal(String html, String path, String fileNameHead) throws IOException {
+		saveToLocal(html, path, fileNameHead.replaceAll("/", "&"), HTML_EXT);
 	}
+
 	public static void saveToLocal(String html, String path, String fileNameHead, String extension) throws IOException {
 		try {
 			File file = new File(path);
@@ -69,7 +70,7 @@ public class FileUtil {
 		}
 	}
 
-	//如果index.txt文件已经存在，则生成index_1.txt文件，避免创建重名文件
+	// 如果index.txt文件已经存在，则生成index_1.txt文件，避免创建重名文件
 	public static String detectFileName(File directory, String fileNameHead, String extension) throws IOException {
 		String[] allFileInDir = directory.list();
 		if (allFileInDir == null)
