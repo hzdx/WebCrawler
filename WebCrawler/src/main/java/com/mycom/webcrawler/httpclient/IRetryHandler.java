@@ -6,8 +6,12 @@ import java.net.UnknownHostException;
 import org.apache.http.client.HttpRequestRetryHandler;
 import org.apache.http.protocol.HttpContext;
 
-public class WebCrawlerRetryHandler implements HttpRequestRetryHandler {
-	private final int retryTimes = Integer.parseInt(System.getProperty("http.retry", "5"));
+public class IRetryHandler implements HttpRequestRetryHandler {
+	private int retryTimes;
+
+	public IRetryHandler(int retryTimes) {
+		this.retryTimes = retryTimes;
+	}
 
 	@Override
 	public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {

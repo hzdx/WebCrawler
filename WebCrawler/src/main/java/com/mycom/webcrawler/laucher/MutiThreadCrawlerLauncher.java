@@ -7,7 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import com.mycom.webcrawler.htmlhandler.DownloadHandler;
-import com.mycom.webcrawler.httpclient.HttpUtil;
+import com.mycom.webcrawler.httpclient.HttpClientUtil;
 import com.mycom.webcrawler.model.CollectConfig;
 import com.mycom.webcrawler.parser.JsoupParser;
 import com.mycom.webcrawler.thread.CrawlerRunner;
@@ -21,7 +21,7 @@ public class MutiThreadCrawlerLauncher {
 	private String outputDir;
 
 	public void launch() throws Exception {
-		String html = HttpUtil.fetchUrl(entryUrl);
+		String html = HttpClientUtil.fetchUrl(entryUrl);
 		FileUtil.saveToLocal(html, outputDir, "主页");
 
 		BlockingQueue<String> urlQueue = new LinkedBlockingQueue<>();
@@ -53,7 +53,7 @@ public class MutiThreadCrawlerLauncher {
 		service.shutdown();// 主线程不等待
 		service.awaitTermination(Integer.MAX_VALUE, TimeUnit.SECONDS);
 		// 以上两个方法一起阻塞等待线程完成
-		HttpUtil.close();
+		HttpClientUtil.close();
 
 	}
 

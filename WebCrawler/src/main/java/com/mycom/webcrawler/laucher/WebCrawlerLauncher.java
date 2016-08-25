@@ -1,7 +1,7 @@
 package com.mycom.webcrawler.laucher;
 
 import com.mycom.webcrawler.htmlhandler.DownloadHandler;
-import com.mycom.webcrawler.httpclient.HttpUtil;
+import com.mycom.webcrawler.httpclient.HttpClientUtil;
 import com.mycom.webcrawler.model.CollectConfig;
 import com.mycom.webcrawler.parser.JsoupParser;
 import com.mycom.webcrawler.urlholder.UrlHolder;
@@ -13,7 +13,7 @@ public class WebCrawlerLauncher {
 	private String outputDir;
 
 	public void launch() throws Exception {
-		String html = HttpUtil.fetchUrl(entryUrl);
+		String html = HttpClientUtil.fetchUrl(entryUrl);
 		FileUtil.saveToLocal(html, outputDir, "主页");
 
 		// 初始化jsoupParser,urlHolder组件
@@ -30,12 +30,12 @@ public class WebCrawlerLauncher {
 		// 开始处理过程
 		jsoupParser.parseHtml(html, entryUrl);
 		loops(jsoupParser, urlHolder);
-		HttpUtil.close();
+		HttpClientUtil.close();
 	}
 
 	private void loops(JsoupParser jsoupParser, UrlHolder urlHolder) throws Exception {
 		for (String url : urlHolder.getUncrawlUrl()) {
-			String html = HttpUtil.fetchUrl(url);
+			String html = HttpClientUtil.fetchUrl(url);
 			if (html != null) {
 				jsoupParser.parseHtml(html, url);
 			}

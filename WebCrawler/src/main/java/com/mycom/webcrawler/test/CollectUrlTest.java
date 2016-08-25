@@ -1,7 +1,7 @@
 package com.mycom.webcrawler.test;
 
 import com.mycom.webcrawler.htmlhandler.SavePropertyUrlHandler;
-import com.mycom.webcrawler.httpclient.HttpUtil;
+import com.mycom.webcrawler.httpclient.HttpClientUtil;
 import com.mycom.webcrawler.parser.JsoupParser;
 import com.mycom.webcrawler.urlholder.UrlHolder;
 
@@ -10,7 +10,7 @@ public class CollectUrlTest {
 	public static void main(String[] args) throws Exception {
 		String entryUrl = "http://shanghai.anjuke.com/sale/";
 		String targetUrlPrefix = "http://shanghai.anjuke.com/prop/view/";
-		String html = HttpUtil.fetchUrl(entryUrl);
+		String html = HttpClientUtil.fetchUrl(entryUrl);
 
 		// 初始化jsoupParser,urlHolder组件
 		JsoupParser jsoupParser = new JsoupParser();
@@ -26,12 +26,12 @@ public class CollectUrlTest {
 		// 开始处理过程
 		jsoupParser.parseHtmlOnlyLink(html, entryUrl);
 		loops(jsoupParser, urlHolder);
-		HttpUtil.close();
+		HttpClientUtil.close();
 	}
 
 	public static void loops(JsoupParser jsoupParser, UrlHolder urlHolder) throws Exception {
 		for (String url : urlHolder.getUncrawlUrl()) {
-			String html = HttpUtil.fetchUrl(url);
+			String html = HttpClientUtil.fetchUrl(url);
 			if (html != null) {
 				jsoupParser.parseHtml(html, url);
 			}

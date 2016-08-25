@@ -4,6 +4,8 @@ import java.net.URI;
 
 import org.junit.Test;
 
+import com.mycom.webcrawler.httpclient.HttpClientUtil;
+
 public class SimpleTest {
 	@Test
 	public void testUrl() throws Exception {
@@ -35,6 +37,16 @@ public class SimpleTest {
 		if(!uri.getPath().startsWith("/")){
 			//uri = new URI(uri);
 		}
+	}
+	
+	/**
+	 * test for {@link HttpClientUtil#fetchUrl(String)}}
+	 * @throws Exception
+	 */
+	@Test
+	public void testHttpUtil() throws Exception{
+		String url = "https://www.baidu.com";
+		System.out.println(HttpClientUtil.fetchUrl(url));
 	}
 
 }

@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mycom.webcrawler.httpclient.HttpUtil;
+import com.mycom.webcrawler.httpclient.HttpClientUtil;
 import com.mycom.webcrawler.parser.JsoupParser;
 
 public class CrawlerRunner implements Runnable {
@@ -20,7 +20,7 @@ public class CrawlerRunner implements Runnable {
 			try {
 				String url = urlQueue.poll(10, TimeUnit.SECONDS);
 				if (url != null) {
-					String html = HttpUtil.fetchUrl(url);
+					String html = HttpClientUtil.fetchUrl(url);
 					parser.parseHtml(html, url);
 				} else
 					break;

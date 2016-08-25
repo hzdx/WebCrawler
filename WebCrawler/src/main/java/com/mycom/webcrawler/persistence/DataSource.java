@@ -9,14 +9,15 @@ import java.util.Properties;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 public class DataSource {
-	private static BasicDataSource dataSource;
+	private static final BasicDataSource dataSource = initDataSource();
 
 	private DataSource() {
 	}
 
 	// 初始化dataSource
-	private synchronized static void initDataSource() throws IOException {
-		if (dataSource == null) {
+	private static BasicDataSource initDataSource() {
+		BasicDataSource dataSource = null;
+		try {
 			dataSource = new BasicDataSource();
 			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("jdbc.properties");
 			Properties prop = new Properties();
@@ -37,19 +38,19 @@ public class DataSource {
 			dataSource.setMinIdle(5);
 			dataSource.setMaxIdle(10);
 			dataSource.setMaxWaitMillis(30 * 1000);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		return dataSource;
 
 	}
 
 	public static BasicDataSource get() throws Exception {
-		if (dataSource == null) {
-			initDataSource();
-		}
 		return dataSource;
 	}
 
 	public static Connection getConnection() throws Exception {
-		return get().getConnection();
+		return dataSource.getConnection();
 	}
 
 	public static void close() throws SQLException {

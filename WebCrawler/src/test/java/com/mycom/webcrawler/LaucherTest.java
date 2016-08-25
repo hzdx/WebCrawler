@@ -8,7 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
-import com.mycom.webcrawler.httpclient.HttpUtil;
+import com.mycom.webcrawler.httpclient.HttpClientUtil;
 import com.mycom.webcrawler.model.Property;
 import com.mycom.webcrawler.persistence.CommonDao;
 
@@ -41,7 +41,7 @@ public class LaucherTest {
 	@Test
 	public void testParse() throws Exception{
 		String url = "http://shanghai.anjuke.com/prop/view/A483863319";
-		String html = HttpUtil.fetchUrl(url);
+		String html = HttpClientUtil.fetchUrl(url);
 		Document doc = Jsoup.parse(html,"UTF-8");
 //		Document doc = Jsoup.parse(HttpClientTest.doget(url));
 //		//Document doc = Jsoup.connect("http://shanghai.anjuke.com/prop/view/A482253954").get();

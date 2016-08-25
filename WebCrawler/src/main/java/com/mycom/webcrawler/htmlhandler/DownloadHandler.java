@@ -8,13 +8,13 @@ import com.mycom.webcrawler.util.FileUtil;
 
 public class DownloadHandler implements PageHandler {
 	private final Logger log = LoggerFactory.getLogger(DownloadHandler.class);
-	public static final String HTML = ".html";
+	public static final String HTML_SUFFIX = ".html";
 	private String dir;// output directory
 	private String extension;// filename extension
 
 	public DownloadHandler(String dir) {
 		this.dir = dir;
-		this.extension = HTML;
+		this.extension = HTML_SUFFIX;
 	}
 
 	public DownloadHandler(String dir, String extension) {

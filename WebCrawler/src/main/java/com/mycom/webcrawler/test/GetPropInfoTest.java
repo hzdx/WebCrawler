@@ -5,7 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.mycom.webcrawler.extractor.PropertyExtractor;
-import com.mycom.webcrawler.httpclient.HttpUtil;
+import com.mycom.webcrawler.httpclient.HttpClientUtil;
 import com.mycom.webcrawler.model.Property;
 import com.mycom.webcrawler.persistence.PropertyService;
 
@@ -30,7 +30,7 @@ public class GetPropInfoTest {
 				public void run() {
 					for (String url : subList) {
 						try {
-							String html = HttpUtil.fetchUrl(url);
+							String html = HttpClientUtil.fetchUrl(url);
 							Property property = extractor.extract(url, html);
 							PropertyService.saveProperty(property);
 						} catch (Exception e) {
